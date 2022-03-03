@@ -1,0 +1,45 @@
+appendixtable:
+	t_stats_fintech
+	t_stats_loan_app
+	confusion_mat
+	sample_comp_appendix
+	t_stats_samples_emp
+	black_share_zip
+	ppp_round_characteristics
+	table_f:round_nocontrols
+	regs_racefintech_fe_emp
+	regs_selfid_racefintech_fe
+	white_racefintech
+	regsbanknofintech
+	regs_racefintech_cardrev_appmonth
+	regs_animus_ocr
+	regs_covid
+
+table:
+	t_stats_loan
+	t_stats_samples
+	bank_statements
+	regs_racefintech_fe
+	regs_race_signal
+	racefintech
+	regs_bychecking
+	regs_nofintech_fe
+	regs_racefintech_cardrev
+	lendio
+	regs_animus
+
+appendixfigure:
+	f:race_dist
+	f:bl_self
+	f:geography
+	f:round_nocontrols
+	race_map
+
+figure:
+	f:bl50
+	f:loans_week
+	f:race_controls
+	f:auto
+	race_map
+	race_hist
+

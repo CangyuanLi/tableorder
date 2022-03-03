@@ -1,0 +1,1310 @@
+%%% RACIAL DISPARITIES IN ACCESS TO SMALL BUSINESS CREDIT: EVIDENCE FROM THE PAYCHECK PROTECTION PROGRAM %%%
+
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%
+%%% Packages %%%
+%%%%%%%%%%%
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath, amsfonts, amsthm, bm, bbm} 										                %math stuff
+\usepackage{adjustbox, multirow, graphicx, booktabs, subcaption, float, dcolumn} 					    %float stuff
+\usepackage[colorlinks=true, allcolors=black, citecolor=black, urlcolor=blue]{hyperref} 				%hyperlinks
+\usepackage{setspace} 																                    %spacing
+\usepackage{natbib}																	                    %bib
+\usepackage{fancyhdr}																                    %header for appendix
+\usepackage{pdflscape, afterpage}														                %landscape
+\usepackage{times}
+
+%%%%%%%%%%
+%%% Options %%%
+%%%%%%%%%%
+\setlength{\bibsep}{0.0pt} 																                %bib sep length
+\captionsetup[table]{aboveskip=5pt}
+\captionsetup[table]{belowskip=5pt}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}											            %raggedleft column X
+\newcolumntype{d}[1]{D{.}{.}{#1}}														                %set new col type
+\newcommand\mc[1]{\multicolumn{1}{c}{#1}}												                %wrapping columns
+\renewcommand*{\thesubfigure}{\Alph{subfigure}}											                %make subfigure numbering A, B, C...
+
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+%%%%%%%%%
+%%% Title %%%
+%%%%%%%%%
+\title{\Large \textbf{Racial Disparities in Access to Small Business Credit:\\Evidence from the Paycheck Protection Program}}
+
+%%%%%%%%%%%%%%%%%%%%
+%%% Author + Acknowlegdement %%%
+%%%%%%%%%%%%%%%%%%%%
+\author{Sabrina T. Howell, Theresa Kuchler, David Snitkof, Johannes Stroebel, Jun Wong\thanks{Howell, Kuchler, Stroebel: NYU Stern \& NBER; Snitkof: Ocrolus; Wong: NYU Stern. Email: sabrina.howell@nyu.edu. We are grateful to Georgij Alekseev for superb research assistance, and to Enigma, Middesk, Lendio, and Ocrolus for data. In particular, we thank Scott Monaco at Ocrolus for insights and analytical work. We are also grateful for help from Sriya Anbil, Brock Blake, Katherine Chandler, Christine Dobridge, Kyle Mack, Karen Mills, David Musto, Hicham Oudghiri, Madeline Ross, Kurt Ruppel, and Sam Taussig. We thank seminar participants at the University of Georgia for helpful comments. Howell's work on this project is funded by the Kauffman Foundation. } }
+
+\date{\today}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%
+%%% Title Page %%%
+%%%%%%%%%%%
+
+\begin{titlepage}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+\begin{singlespace}
+
+\noindent We explore the sources of racial disparities in small business lending by studying the \$806 billion Paycheck Protection Program (PPP), which was designed to support small business jobs during the COVID-19 pandemic. PPP loans were administered by private lenders but federally guaranteed, largely eliminating unobservable credit risk as a factor in explaining differential lending by race. We document that even after controlling for a firm's zip code, industry, loan size, PPP approval date, and other characteristics, Black-owned businesses were 12.1 percentage points (70\% of the mean) more likely to obtain their PPP loan from a fintech lender than a traditional bank. Among conventional lenders, smaller banks were much less likely to lend to Black-owned firms, while the Top-4 banks exhibited little to no disparity after including controls. We use novel data to show that the disparity is not primarily explained by differences in pre-existing bank or credit relationships, firm financial positions, fintech affinity, or borrower application behavior. In contrast, we document that Black-owned businesses' higher rate of borrowing from fintechs compared to smaller banks is particularly large in places with high racial animus, pointing to a potential role for discrimination in explaining some of the broader racial disparities in small business lending. We find evidence that varying degrees of automation may help explain the differences across lender types in apparent discrimination.
+\end{singlespace}
+\end{abstract}
+\bigskip \bigskip
+
+\end{titlepage}
+
+\onehalfspacing
+
+%%%%%%%%%%%%%%%%%%%%
+%%% Introduction %%%
+%%%%%%%%%%%%%%%%%%%%
+
+
+In recent years, policy makers in the U.S. and elsewhere have become increasingly concerned about differences across racial groups in access to financial services such as consumer and small business credit \citep{apblack,nytblack,ptblack}. One challenge to understanding the determinants of observed racial differences in credit access has been the difficulty of disentangling the role of credit risk from a possible independent role of race through channels such as preference-based discrimination. In this paper, we study how and why lenders differed in their propensity to extend Paycheck Protection Program (PPP) loans to small businesses owned by members of various racial and ethnic groups. The PPP was established as part of the CARES Act, passed in March 2020, and was designed to help small businesses struggling during the COVID-19 pandemic. With a volume of \$806 billion, it is one of the largest single public finance programs in U.S. history.
+
+The design of the PPP makes it an attractive setting to study racial disparities in access to small business credit. The Small Business Administration (SBA) did not issue specific guidance on loan distribution, leaving the private financial institutions administering the loans to independently determine which businesses to serve. As a result, institutional factors that determine banks' regular lending decisions may have also affected PPP loan originations. Importantly for our research design, PPP loans were fully guaranteed by the federal government and the loan amount was based solely on payroll, largely eliminating credit risk and selection concerns from banks' lending decisions. When combined with information on firm-level banking relationships and cash flows, the PPP data can therefore shed light on the role of race and ethnicity in the lending decisions of different private lenders.
+
+We work with public administrative data from the SBA on 11.8 million loans made between April 3, 2020 and May 31, 2021. In our analysis, we restrict the sample to ``first draw" loans (some firms were eligible for two loans) and to loans made before February 24, 2021, when the program's rules changed to explicitly prioritize lending to small firms and minorities. Within this sample of 5.7 million loans, we build on a well-established literature to  predict a business owner's race and ethnicity using information such as the owner name and location \citep{Imai2016, Humphries2019, tzioumis2018demographic}. We gather owner names from business registrations in collaboration with the analytics firm Middesk. To improve the prediction, we train the model on the subset of PPP loans in which the borrower reports their race. Our model performs well at predicting self-reported race in a hold-out sample not used to train the model. This assigned race should be interpreted as a signal that is highly correlated with self-reported race and contains important socioeconomic content, consistent with studies showing discrimination against job applicants with ``Black-sounding" names \citep{bertrand2004emily,milkman2012temporal,bartovs2016attention}.\footnote{As we discuss in more detail below, in those instances in which the self-reported race differs from the predicted race, it is plausible that many loan officers, who usually do not have access to borrowers' true race but observe the inputs to the algorithm, would treat borrowers in a way that is more aligned with the signal than with self-reported race. For example, a number of borrowers with the last name ``Huang'' self-report to be black but are assigned Asian by the algorithm.}  Using this approach, we are able to assign race and ethnicity to a business owner for  4.2 million PPP loans. 
+
+We document substantial variation across different types of financial institutions in the propensity to extend PPP loans to Black-owned businesses. Within the analysis sample of 4.2 million PPP loans, about 8.6\% of total loans and 2.9\% of loans to employer businesses went to Black-owned businesses. Traditional banks made between 3.3\% (among small banks) and 7.8\% (Wells Fargo) of their PPP loans to Black-owned businesses. On the other hand, fintech lenders made 26.5\% of their PPP loans to Black- owned businesses. Overall, fintech lenders were responsible for 53.6\% of PPP loans to Black-owned businesses, while only accounting for 17.4\% of all PPP loans in the analysis sample. There are also differences across lenders in the propensity to lend to White-, Asian- and Hispanic-owned firms. However, the difference in lending between conventional lenders and fintech lenders is most striking for Black-owned businesses, and this disparity is the focus of our paper. 
+
+We first consider important dimensions along which Black-owned businesses differ from other firms. For example, their average PPP loan amount of \$24,315 is less than half of that for Asian- and Hispanic-owned businesses, and one-quarter of that for White-owned businesses. Since PPP lenders were compensated with 5\% of the loan value for loans under \$350,000, the presence of fixed costs or capacity constraints creates an incentive to prioritize the largest loans. If fintech lenders have smaller fixed costs or more capacity, this could explain their disproportionate lending to smaller, Black-owned firms. We therefore add granular controls for loan size. We also control for loan approval date and borrower characteristics such as the zip code, industry, business organizational form, and employer status.\footnote{Adding zip code fixed effects suggests that traditional lenders are less likely than fintechs to make loans to businesses -- even White-owned ones -- in predominantly minority communities. An important question for research is therefore to better understand, for example, why fintech lenders are more likely to extend loans to any firm located in a high-minority neighborhood.} Overall, about two-thirds of the unconditional difference in Black-owned businesses' propensity to get fintech PPP loans relative to loans from other lenders is explained by differences in these characteristics, which hold the profitability of lending and the availability of bank branches fixed. However, even with these controls, we find that Black-owned businesses are 12.1 percentage points more likely to obtain their PPP loans from a fintech firm than from traditional lenders, which is 70\% of the mean of 17.4\%.
+
+The main contribution of this paper is to test several hypotheses that might explain the remaining large disparity between Black-owned and other businesses in the chances of getting a PPP loan from a fintech rather than a conventional lender. First, observers of the PPP program have noted that banks tended to prioritize their own clients' PPP loan applications, which may have distorted allocations away from the government's intended ``first come first serve" approach  \citep{nytmin, li2020supplies}. If banks indeed prioritized PPP loan applications from their own clients, and if Black-owned businesses did not bank with active PPP lenders, this could explain some of the observed differences in their propensity to eventually borrow from other lenders such as fintech firms.  
+
+To assess whether this channel can explain the remaining disparity, we match the PPP data to novel bank statement data from Ocrolus, a firm that digitizes and analyzes financial documents for financial institutions. These bank statements, which are available for about 170,000 PPP borrowers in our analysis sample, include information on bank and credit relationships as well as cash flows. Within this matched sample---which selects on having a checking account and a past fintech loan application---Black ownership is associated with a 5.5 percentage point higher probability of obtaining a PPP loan through a fintech lender, conditional on controls. This disparity is unaffected by adding fixed effects for the identity of the bank where a borrower has their primary business checking account. In other words, even though we find that larger banks did serve their own clients at higher rates, this fact does not explain the higher rate of fintech PPP loans for Black-owned businesses.
+
+Since differential pre-existing relationships with banks in \textit{general} cannot explain the disparity, we look to variation across bank types and outside of relationships. Once we control for observable business characteristics and bank relationships, much of the remaining substitution appears to be between non-Top-4 banks---especially small- and medium-sized banks---and fintech lenders.\footnote{When we consider lending to the other races and ethnicities in our fully controlled models, we find that small- and medium-sized banks in particular were more likely to lend to White-owned businesses.}  In analyses that restrict the sample to firms with checking accounts at different types of banks, we identify two channels through which Black-owned businesses shifted to borrowing from fintechs rather than from smaller banks. First, Black-owned firms were less likely to get their PPP loans from their checking account banks if they banked outside the Top-4 banks. Second, among firms that got PPP loans outside their checking account banks, Black-owned firms were much less likely to obtain loans from smaller banks, and much more likely to obtain them from fintech lenders. Quantitatively, this second channel, which captures racial differences in the rates of establishing new banking relationships with different types of lenders, explains a much larger share of the observed disparity.
+
+We next explore whether borrowers' financial conditions can explain the relatively higher probability of Black-owned businesses of obtaining PPP loans from fintech firms instead of smaller banks. Even though PPP loans were fully guaranteed by the federal government, some traditional lenders may have preferred lending to better-performing businesses that would be more attractive future clients. In addition, loan officers at these banks, who are used to screening for creditworthiness, may have preferred businesses with better financial positions as they do in their usual course of business, even if a borrower's financial performance would not directly affect the profitability of a given PPP loan. We assess this possibility using monthly data from Enigma on firms' credit and debit card revenues, focusing on the period immediately prior to loan approval. In the matched sample of 820,000 firms, adding fixed effects for percentiles of card revenue during the PPP loan approval month and the two previous months has no effect on the observed propensity of Black-owned firms to receive their PPP loans from fintech lenders. Controlling for bank statement cash flows also does not affect the disparity. While both the card revenue and bank statement samples are not entirely representative---in particular, they skew towards larger or more sophisticated firms---the fact that the disparity persists in these samples is evidence of its powerful explanatory power across all segments of the data.
+
+A third explanation for the racial disparities is firm application behavior, rather than lender decision-making. For example, it could be that Black-owned businesses have a preference for fintech lenders and thus applied to these lenders at higher rates. This is unlikely given that we also observe a disparity within the Ocrolus data which selects on firms with prior fintech applications, and therefore holds fixed a certain degree of fintech affinity. Nonetheless, to assess this possibility, we obtain PPP application data from the marketplace lending platform Lendio. Lendio routed some PPP applications to conventional lenders, some to fintech lenders, and some to both (routing was random conditional on loan size, geography, and capacity criteria set by the lender partners). We find that even within a sample of about 46,000 PPP loan applications that Lendio sent only to conventional lenders, Black-owned businesses were 3.9 percentage points more likely to end up with a fintech PPP loan. This offers evidence consistent with the hypothesis that conventional lenders more often reject applications from Black-owned businesses, pushing these firms to subsequently apply to fintechs. 
+
+We also consider whether systematic differences between fintech lenders' and conventional lenders' compliance standards may have contributed to the observed differential probability of lending to Black-owned businesses. \cite{griffin2021did} suggests that fintechs had different Know-Your-Customer and Anti-Money Laundering (KYC/AML) policies.\footnote{PPP lenders may have been responsible for loans shown to be fraudulent and were accountable for some but not all of the compliance requirements that apply to normal small business lending (regulatory  \href{https://www.acfcs.org/new-treasury-guidance-on-intersection-of-aml-bsa-sba-and-ppp-stimulus-loans-could-cause-more-confusion-than-clarity/}{guidance} on these requirements was at times confusing and unclear, which may have led some lenders to err on the side of caution).} However, this is unlikely to be the explanation for the differential lending across racial groups that we observe. Recall that conditional on observable firm characteristics, the substitution towards fintech comes from relatively smaller banks, with no apparent lending disparity at the Top-4 banks. It is not plausible that the Top-4 banks---which are the most intensively regulated---have lower standards than smaller banks. 
+
+The final mechanism that we consider is the role of human decision-making in loan administration, which could enable preference-based discrimination against Black borrowers. To explore this possibility, we examine how the propensity of Black-owned businesses to obtain fintech loans varies with measures of racial discrimination. Using six measures of racial animus---including racially-biased Google searches, implicit and explicit bias tests, and measures of local housing segregation---we find that the tendency of Black-owned businesses to borrow from fintech lenders instead of smaller conventional lenders is consistently higher in areas with more racial animus, even after controlling for firm and loan characteristics. These results suggest that preference-based discrimination might explain at least some of the substitution of Black-owned businesses towards fintech and away from smaller banks.
+
+Automation of the loan application and approval process could help account for the absence of disparate treatment by race at the Top-4 banks (with controls) and the high rate of lending to Black-owned firms at fintechs. Fintech lenders almost fully automate their underwriting processes. There is little human involvement, leaving no scope for preference-based discrimination to substantially affect the approval decision. In contrast, traditional banks generally rely more on personal relationships between loan officers and clients \citep{petersen1994benefits,berger2011bank}. However, there is sizable variation in the degree of automation across conventional lenders, with larger banks being more automated than smaller banks.\footnote{For example, one news article notes that ``Large banks have avidly adopted robotic process automation...It's tougher for smaller banks to follow suit" \citep{Crosman2020}. As a second example, a 2018 \href{https://www.fanniemae.com/media/20256/display}{Fannie Mae} survey found that 76\% of large banks but only 47\% of small banks were familiar with artificial intelligence or machine learning technology.} Consistent with this narrative, we find evidence that when a number of small banks automated their loan origination procedures during the PPP period, their rate of lending to Black-owned businesses increased relative to other matched small banks. This supports the conjecture that there may be significant equity benefits from automation in the loan origination process.
+
+It is hard to quantify the possible role of discrimination, and other explanations for the residual racial gap in the probability of borrowing from different lenders might remain. However, it is unclear how a mechanism besides discrimination would account for the larger racial gap in areas with higher racial animus, and our granular controls for firm size, location, industry performance, and pre-existing banking and credit relationships will account for most possible explanations. In addition, it is important to highlight that many of the variables we control for in our regressions---such as the location of bank branches, or the distribution of which firms have checking accounts at banks---may themselves be the result of historical patterns of discrimination. In other words, it is possible that the substantial differences in our controlled models represent a lower bound estimate of the overall effect of discrimination on lending patterns. 
+
+Several contemporaneous papers offer results consistent with ours. \cite{erel2020does} show that fintech lenders tended to extend more PPP loans in areas with higher minority population shares. \cite{fairlie2021did} also use geographic variation to find that total PPP loan flows were negatively correlated with the minority share of the population. Relative to these papers, we demonstrate that even within a given geography, fintech lenders disproportionately lent to Black-owned firms, showing that bank branch location cannot fully explain the observed patterns. In addition, we make progress on identifying the mechanisms, ruling out that the patterns are largely explained by differential banking relationships, financial performance, or application behavior, and finding evidence consistent with preference-based discrimination among smaller banks without automated lending processes. \cite{scharf2021ppp} study PPP lending in a sample of nearly 11,000 restaurants in Florida for which they can link owner names to voter registration records. They show that minority-owned businesses are more likely to get non-bank PPP loans, and conclude that racial bias seems to explain the lending differences. Our paper benefits from vastly larger and richer data that is more representative of PPP borrowers across geographies and industries. In addition, our use of checking account data, credit card data, and loan application data allows us to directly assess a variety of possible explanations in addition to discrimination. Finally, our analysis of cross-sectional variation in the lending behaviors of different conventional lenders allows us to show that the degree of automation in the lending process is a key factor in explaining the various observed patterns. 
+
+More broadly, we contribute to understanding racial disparities in access to financial services. This literature has mainly studied residential mortgage and consumer credit markets \citep{tootell1996redlining,bayer2018drives,dobbie2020measuring,bhutta2019minorities,ambrose2020does,giacoletti2021using,begley2021color}. In recent work, \cite{blattner2021costly} describe how credit bureau data are more uncertain for racial minorities, leading to disparate outcomes in the mortgage market. While there is extensive work on bias against Black people across a wide variety of settings \citep[e.g.,][]{arnold2018racial,bertrand2004emily, knowles2001racial, anwar2006alternative, price2010racial}, there is less work on discrimination against Black business owners. \cite{blanchflower2003discrimination} find racial differences in access to small business credit, while \cite{robb2018testing} do not find such differences. Other work on the role of race in small business lending includes \cite{fairlie2007black}, \cite{asiedu2012access}, \cite{bellucci2013banks}, and \cite{fairlie2020black}.
+
+Finally, this paper relates to two nascent literatures. The first addresses how the COVID-19 pandemic and associated policy responses affected small businesses \citep{alekseev2020, bartik2020impact,fairlie2020, greenwood2020sizing, kim2020revenue}. Much of the  existing work on the PPP focuses on the effectiveness of the program in mitigating job loss \citep{hubbard2020has, faulkender2020job, granja2020, autor2020, bartik2020targeting, barraza2020short,bartlett2020small}. Other researchers have examined the degree to which firm size or pre-existing banking relationships can explain access to PPP loans \citep{humphries2020information, li2020supplies}. The second strand of literature addresses the role of fintech firms in the financial system \citep{seru2019regulating,philippon2019fintech, fedann, fedfintech, gopal2020rise}. Most directly related is a literature that has explored the role of fintech lenders in extending credit to traditionally underserved minorities \citep{tang2019peer, balyuk2020fueling,bartlett2019consumer, fuster2019role, buchak2018fintech, berg2020rise, d2020costly}.
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%% Data & Summary Statistics %%%
+%%%%%%%%%%%%%%%%%%%%
+
+\section{The Paycheck Protection Program: Setting and Data} \label{data}
+
+The Paycheck Protection Program (PPP) was first established as part of the Coronavirus Aid, Relief and Economic Security Act (“CARES Act”), passed on March 27, 2020. The PPP provided 100\% government-guaranteed loans to firms which certified that their businesses were “substantially affected by COVID-19." For businesses using the loans to make eligible payments such as covering payroll, the loans would eventually be forgiven. The loan amount was fixed at 2.5 times monthly pre-COVID payroll, and was uncollateralized. The Small Business Administration (SBA) approved lenders and individual loans, though this primarily involved a duplication check to avoid granting multiple loans to a single entity. While Section 1102 of the CARES Act specifies that the program should prioritize ``small business concerns owned and controlled by socially and economically disadvantaged individuals,'' private lenders, which can face capacity constraints, were fully responsible for targeting the funds and determining which PPP applications to prioritize, and media reports early in the life of the PPP program raised concerns that banks were turning away large numbers of PPP applications from minority-owned businesses \citep{wsjppp,vox_article,forbes_article}. 
+
+The SBA compensated lenders for originating and servicing PPP loans according to the following graduated, upfront fee system, creating incentives for lenders to prioritize larger loans:\vspace{-.1cm}
+\begin{itemize}
+\item 5\% for loans of not more than \$350,000; \vspace{-.3cm}
+\item 3\% percent for loans of more than \$350,000 and less than \$2,000,000; and \vspace{-.3cm}
+\item 1\%  percent for loans of at least \$2,000,000. \vspace{-.1cm}
+\end{itemize}
+
+\noindent The initial CARES Act authorized \$349 billion in loan guarantees for the PPP, and issuance began on April 3, 2020. Demand for PPP loans vastly exceeded expectations, and funding for the initial program ran out on April 16, 2020. Congress approved a second PPP tranche of  \$310 billion on April 24, 2020, and its distribution began on April 27, 2020. A third tranche of \$284.5 billion was approved on December 27, 2020. In this round, firms were eligible to receive a ``second draw" loan if they met certain conditions. By the time the program closed permanently at the end of May, 2021, 11.5 million loans, administered by 5,467 lenders and totalling more than \$800 billion, had been approved. As of June 2021, 64\% of all loans made in 2020 had been forgiven.
+
+Lenders participated voluntarily in the PPP, and they entered and left the program over time. Fintechs tended to enter somewhat later for a number of reasons. Some required special approval because they were not regulated insured depository institutions or pre-approved SBA lenders. Others did not have large enough balance sheets to originate many PPP loans, and needed to wait for the PPP Liquidity Facility established by the Federal Reserve to come online, which only occurred several weeks after the program began. This facility enabled banks, and later fintechs, to post PPP loans as collateral for new funds with which to originate loans. Still others needed to partner with originating charter banks, such as Celtic, in order to participate. In our analysis below, we control for the week of PPP loan approval to ensure that our results are not affected by the dynamics of lender participation.
+
+\subsection{PPP Data}\label{ppp_data}
+
+We obtain information on all PPP loans as of August 15, 2021 directly from the \href{https://data.sba.gov/dataset/ppp-foia}{SBA}. These data were released following a court order and include the business name and address for all PPP loan recipients, as well as information about the business type, loan size, self-reported number of jobs saved, the loan originator, and the loan servicer. Subsequently, we term the originator the ``PPP lender." To construct our dataset, we retain only a firm's first loan and drop apparent duplicate loans, so that each firm appears once. Specifically, we begin with a raw dataset from the SBA, which has 11.8 million loan observations. Of these, 2.9 million are tagged as second draws (where a firm legally obtained a second PPP loan). After dropping these, we are left with 8.8 million observations. 
+
+We also drop loans made after February 23, 2021. We do this because the Biden Administration made drastic changes to the PPP, the first of which took effect on February 24. These \href{https://www.jdsupra.com/legalnews/paycheck-protection-program-round-2-7761547/}{changes} included first restricting loans to small firms with less than 20 employees, and then permitting only Community Development Financial Institutions (CDFIs) to use PPP funds. Since our goal is to understand lending behavior in a more representative population of both lenders and borrowers, we drop this period. This leaves us with 5.7 million PPP loans. However, our results are very similar when we use the full time period, as well as when we include second draw loans. 
+
+The focus of our analysis is to understand differences by lender type in originating PPP loans to minority-owned businesses. We classify all PPP lenders into the following mutually exclusive groups:
+\begin{enumerate}
+\begin{singlespacing}
+\item The Top-4 banks by assets, which we consider separately (JP Morgan Chase, Bank of America, Wells Fargo, and Citibank);
+\item Large banks: Banks with more than \$100 billion in assets, excluding the Top-4;
+\item Medium-sized banks: Banks with more than \$2.2 billion in assets (but below \$100 billion);
+\item Small banks: Banks with less than \$2.2 billion in assets;\footnote{We include the roughly 6,000 loans by Business Development Corporations (BDCs)in the Small Bank category, since these loans behave similarly in terms of the variables we study as the Small Bank loans.}
+\item Credit unions: Defined based on the lender name (i.e. having "credit union" or "CU" at the end of the name);
+\item Community Development Financial Institutions (CDFIs) and nonprofits;\footnote{We pool nonprofits with CDFIs because nonprofits issued very few loans (fewer than 15,000) and their loans have similar characteristics as those of the CDFIs.}
+\item Minority Depository Institutions (MDIs): As classified by the \href{https://www.fdic.gov/regulations/resources/minority/mdi.html}{FDIC}.
+\item Fintech lenders: All lenders officially designated as such by the SBA. We further include online lenders who originate primarily for or via fintech partners or platforms, online lenders founded since 2005, and online lenders that received venture capital (VC) investment. Appendix Table \ref{t_stats_fintech} lists all lenders we classify as ``fintech".\footnote{In some cases, the originator listed in the table made loans primarily through fintech partners. For example, all of PayPal's fintech loans were originated by WebBank, and Square's loans by Celtic Bank. The only fintech lender with a branch is Cross River. However, Cross River originated an overwhelming quantity of loans for fintech partners such as Kabbage, they were founded in 2008, and received VC funding, so we consider Cross River a fintech lender for our purposes rather than a traditional bank. In the data, we do not observe loan referrals from traditional banks to other lenders, so loans referred to fintech by other lenders would be classified as fintech loans. We also do not observe back-end processors that do not show up as lenders or servicers, including Finastra, Ocrolus, and Customers Bank (which played this role for other lenders even as it was also processing its own PPP loans). So some loans processed by fintech firms but originated by other lenders would be classified according to their ultimate lender.}
+\end{singlespacing}
+\end{enumerate}
+This classification yields 11 mutually exclusive lender types (note each of the Top-4 banks is considered as its own category). Table \ref{t_stats_loan} shows how PPP loan origination varied across these lender types for the full sample (Panel A) and the first-draw sample (Panel B). Focusing on Panel B, traditional banks originated about 75\% of PPP loans, with non-Top-4 banks responsible for 59\% of all loans. Fintech lenders originated 16.2\% of all PPP loans, while credit unions and MDIs each originated about 4\%, and CDFIs 2\%. Fintech and non-bank lenders made substantially smaller loans. The average (median) PPP loan amount for fintech lenders is \$31,921 (\$15,500) compared to, for example, \$87,182 (\$20,833) for small banks. The PPP loans originated by credit unions and Wells Fargo were the next-smallest in both average and median. In Panel A of Appendix Table\ref{t_stats_loan_app}, we show similar summary statistics for the subset of loans for which we can predict borrower race.
+
+\subsection{Identifying Borrower Race and Ethnicity}\label{race_predict}
+
+A key element of our analysis is to identify the race and ethnicity of the owners of the firms participating in the PPP. The SBA data contain details on owner race for a small and selected subset of PPP borrowers who chose to self-report this information in their loan application, and for which the lender also chose to report this information to the SBA. To identify a signal for race and ethnicity for a larger set of PPP borrowers, we build on a well-established literature and predict race from a business owner name, location, industry, and employer status. 
+
+We first identify a borrower firm's individual owner or most senior executive. Our primary source for this information is data on current firm officers drawn from Secretary of State registrations, which the data analytics firm Middesk provided to us as of July 2021. The owner is identified as the first individual listed as owner or principal under “business contacts” in Secretary of State filings. For non-employer firms such as sole proprietorships, we also use the fact that the ``business name'' reported in the PPP data usually corresponds to the name of the owner. Finally, we obtained applicant names for a sample of PPP applicants from Lendio up to November 2020. We combine these data with public SBA information on the businesses' addresses, industries, and employer statuses. We predict the race of the owners of small businesses participating in the PPP based on their name as well as the firm's location, industry, and employer status using a machine learning approach. We use these data to estimate the conditional probability of a borrower being Asian, Black, Hispanic, or White. 
+
+Our process consists of two steps. First, we follow the methodology in \citet{Imai2016} by combining the Census list of last names \citep{word2008demographic} with the census tract of each business location to estimate the conditional probability that an individual belongs to a certain racial group given their last name and location.\footnote{Suppose we denote the last name and census tract of an individual $i$ as $L_i$ and $T_i$. The unobservable race of the individual is denoted as $R_i$ and $\mathcal{R} \in \{Asian, Black, Hispanic, White\}$ is the available set of all racial groups. We would like to estimate $Pr(R_i = r| L_i=l, T_i=t)$. The Census list of last names provides the racial distribution of 151,671 last names, $Pr(R_i=r|L_i=l)$, which makes up 90\% of the population in the 2000 Census. We obtain the racial distribution of each census tract from the American Community Survey, which gives $Pr(R_i=r|T_i=t)$, and the population share of each census tract $Pr(T_i=t)$. Assuming that the location and last name of an individual are independent conditional on race, Bayes’ rule implies $Pr(R_i=r|L_i=l, T_i=t) = \frac{Pr(T_i=t|R_i=r)Pr(R_i=r|L_i=l)}{\sum_r’ \in \mathcal{R} Pr(T_i = t | R_i=r’)Pr(R_i=r’|L_i=l)}$. Here, $Pr(T_i=t|R_i=r)$ can once again be decomposed using Bayes’ Rule, allowing for a probabilistic prediction of individual’s race.  Note that \citet{Imai2016} extend earlier work by \citet{elliott2008new, elliott2009using} that combines last names and location to predict race by adding gender and partisan affiliations. We do not make use of gender and party affiliation because we do not observe these variables for PPP borrowers.} The second step combines the Bayesian posterior probability from the first step with the racial distribution of common first names and industries by employer status as features in a random forest model with 1,000 trees.\footnote{We obtain the racial distribution of first names from \cite{tzioumis2018demographic} and industries from the Survey of Business Owners and Self-Employed Persons \citep{sbo2012}.} We train and validate the random forest model on the subset of the PPP data with self-reported race. The model then outputs the probability that a borrower belongs to a certain race given first and last name, location, industry, and employer status. We identify the borrower to be of a certain race by maximizing the probability across the set of racial groups $\mathcal{R}$ for an individual. In a robustness test, we restrict the sample to borrowers who have an assigned probability of more than 90\% for their most likely races.
+
+In total, we can predict the race for 4.18 million unique PPP borrowers (for the remaining firms, we do not observe owner name or the algorithm predicts race to be ``Other,'' which is the case for about 30,000 borrowers). We show in Panel A of Appendix Table \ref{confusion_mat} that the model correctly predicts the vast majority of the self-reported sample (note we do not actually use the self-reported race in our analysis, but instead the prediction, so that we consistently capture the signal sent by the name). For example, of those we predict to be Black, 93\% self-identify as Black (9.1/9.6 $\approx$ 0.93). To assess the out-of-sample quality of the prediction, which is perhaps most relevant for assessing our ability to predict the race and ethnicity of individuals who did not self-identify, we randomly set aside a ``hold-out" sub-sample of borrowers who self-identify race but are not included in the training of the random forest algorithm. Panel B of Appendix Table \ref{confusion_mat} contains the confusion matrix of our race prediction within the hold-out sub-sample. It shows that 75\% of those business owners that we predict to be Black also self-identify as Black (5.7/7.6 $\approx$ 0.75). 
+
+We show the probability distribution for each race in Appendix Figure \ref{f:race_dist}. For example, Panel A contains the set of borrowers whose predicted race is Black (the algorithm assigns Black to have the highest probability across the race/ethnicity options). The graph shows the probability of being Black among these observations. Panel D of Appendix Table \ref{confusion_mat} summarizes these probability distribution for each race; among people predicted to be Black, the mean chance of being Black according to the algorithm is 76\%, with a median of 80\%. 
+
+It is worth noting that, since loan officers often only have access to borrowers' names and locations (rather than true borrower race), they may actually be responding to the race or ethnicity most likely associated with a given name, rather than to the borrowers' actual race or ethnicity. For example, two of the prediction algorithm's ``errors" are individuals whose last names are Huang and Rodriguez, who identify as Black but are predicted to be Asian and Hispanic, respectively. It is conceivable that loan officers observing only applicants' names might also infer an incorrect race for these respondents, and our algorithmically assigned race may correspond closely to the race inferred by (and thus potentially influencing) a loan officer. Such behavior would be highly consistent with findings from audit studies such as \citep{bertrand2004emily}, which show that there is discrimination against job applicants with ``African American-sounding" names. 
+ 
+We call the sample for which we can identify race the ``PPP Analysis Sample." Panel A of Table \ref{t_stats_samples} shows that, within this sample, 8.6\% of business owners are Black, 7.5\% are Hispanic, 8.9\% are Asian, and 75.0\% are White. The distributions of originating lender, firm characteristics such as loan amount, and business forms are similar across the full sample (Table \ref{t_stats_loan}, Panel B) and the analysis sample. For example, the average PPP loan amount is \$93,784 in the full sample and \$93,666 in the analysis sample (Table \ref{t_stats_samples}, Panel A).  Appendix Table \ref{sample_comp_appendix} confirms that the distributions of firms' business types, locations, and industries are similar in the full sample and in the analysis sample.\footnote{We consolidate business types to seven categories from the 19 organizational forms in the SBA data: corporations, limited liability corporations (LLC), non-profits, self-employed, sole proprietorships, subchapter S corporations, and other. We assign cooperatives andre other non-profit organizations under the non-profit umbrella. Independent contractors and self-employed individuals are classified as self-employed, and limited liability partnerships are considered as LLCs. ``Other" includes any business types with less than 100,000 observations (such as employee stock ownership plans, housing co-op's, joint ventures, partnerships, professional associations, rollover as business start-ups, tenant in commons, tribal concerns, and trusts).} This highlights that the sample for which we can predict race is broadly representative of the overall PPP population, which, in turn, is relatively representative of privately-owned U.S. businesses on industry and geography (see the information in \href{https://www.sba.gov/document/report-sba-covid-relief-program-report}{SBA May 2021 Program Report}).
+
+The racial composition of our PPP analysis sample is also comparable to that of the population of small business owners in the United States. Appendix Table \ref{t_stats_samples_emp} repeats Panel A of Table \ref{t_stats_samples} for employers and non-employers, respectively. For example, we predict that 2.9\% of employer businesses in the PPP analysis sample are Black-owned, compared to 2.1\% of the population of small business owners in the  \href{https://www.census.gov/library/publications/2012/econ/2012-sbo.html}{2012 U.S. Census Bureau Small Business Owners survey}. Among non-employer firms, 18.6\% are Black-owned in our sample vs. 11.2\% in the population.
+
+\subsection{Bank Statement Data}\label{data_bankst}
+
+To help us distinguish between various explanations for differential lending of banks across races, we acquire data from Ocrolus on borrower firms' bank statements through July 2021. Ocrolus digitizes documents for fintech companies, including bank statements that these lenders use in the underwriting process, and thus has a large repository of business checking account statements. We are able to match around 216,000 unique PPP borrowers in our analysis sample to Ocrolus' database using information on the business name and address. If several bank statements are available for a firm (the average firm has three bank statements, mostly from 2019 and 2020), we focus on the most recent statement prior to issuance of the PPP loan.
+
+Using information from the bank statements, we determine borrowers' pre-existing banking and credit relationships. We define a firm's checking account bank as  the bank that issued the statement.\footnote{When a firm has statements from multiple banks, we identify the primary account as the one with the highest balance. Only 1\% of unique firms have statements from multiple banks.} Panel C of Table \ref{t_stats_loan} reports statistics on the whole bank statement-matched sample, organized by PPP lender as in the previous panels. (We repeat Panel C for the subset of loans for which we can predict borrower race in Panel B of Appendix Table \ref{t_stats_loan_app}.) Within this sample, 28.5\% of businesses obtained their PPP loans from their checking account banks. There is sizable heterogeneity across banks. About two-thirds of all PPP loans originated by Bank of America, JP Morgan Chase, and Wells Fargo went to checking account clients of those banks. For other large banks, this number is 50\%, and for medium and small banks it is 39.8\% and 23.8\%, respectively. Additional variables from these banks' statements are reported in Panel B of Table \ref{bank_statements}. For example, we find that almost half of all PPP borrowers have their checking accounts at a Top-4 bank, while 16\% have checking accounts at other large banks. 
+
+We use text descriptions of transactions in the bank statements to identify credit relationships. Specifically, we use the existence of a transaction to or from a lender to suggest a credit relationship of some sort with this lender (e.g., a loan, credit line, or credit card payment). Among all borrowers, about 14.2\% had a credit relationship with a fintech firm, while 80.1\% had a credit relationship with a traditional bank (Panel B of Table \ref{bank_statements}). Note that these credit relationships also include business credit cards, and are thus much broader than other sources of data, such as UCC filings for secured debt. The share of firms with access to external financing in the Ocrolus sample is naturally higher than in the population of small business as reported by \cite{alekseev2020}, since Ocrolus usually only obtains the bank statements for firms actively seeking external credit. There are no large differences by PPP lender type in the propensity of firms to have prior credit relationships with a fintech or a traditional lender (Table \ref{t_stats_loan}, Panel C). In some specifications below we focus on the sample of firms with a history of obtaining fintech credit, allowing us to rule out that any differential lending by fintech firms to minority-owned businesses in this sample primarily reflects a higher familiarity of minority-owned businesses with fintech lenders in general.
+
+We also use the bank statement data to calculate a firm's monthly cash inflows and outflows as a measure of firm financial performance. The median net monthly cash inflow is \$9,124 in the full sample (Table \ref{t_stats_loan}, Panel C), and \$9,047 in the sub-sample for which we can predict race  (Table \ref{bank_statements}, Panel B).
+
+Panel B of Table \ref{t_stats_samples} shows the breakdown by race in the bank statement-matched sample. The bank statement sample and the full analysis sample are similar on many important dimensions such as loan amount, which is \$80,987 in the bank statement sample and \$93,642 in the analysis sample. Bank statement-matched borrowers are more likely to be minority-owned. The main dimension of selection is that firms matched to bank statement data have a much higher rate of fintech PPP loans---36.1\%, compared to 17.3\% in the analysis sample. This reflects the fact that Ocrolus processes loan applications for many fintech clients, and thus selects a sample of applicants with substantial potential fintech affinity.
+
+\subsection{Card Revenue Data}\label{data_card}
+
+To assess whether the real-time financial performance of small businesses helps explain our results, we also gathered data from Enigma on monthly credit and debit card revenues. Enigma is a data science company serving enterprise customers. Through a partnership with Verisk, a data warehouse that banks employ to enable cross-issuer fraud checks, Enigma accesses real-time credit and debt card transactions covering more than 60 banks, including all the major issuers. Their data include at least 60\% of all U.S. debit and credit card transactions.
+
+About one million PPP borrowers are successfully merged between Enigma's merchant identity platform and the PPP loan data. Enigma provided monthly revenue data for these firms, which amounts to over 70 million observations. For 819,380 of these firms, we observe revenue in the approval month or the two months before (Enigma does not report these numbers if there were too few transactions in a given month). We calculate average revenue across these months. Summary statistics are shown in  Panel D of Table \ref{t_stats_samples} and in Panel D of Table \ref{bank_statements}. Notably, the Enigma-matched firms tend to be larger, with a mean loan amount of \$141,223 (compared to \$93,642 in the main analysis sample). This reflects Enigma being more likely to establish a merchant identity for firms that appear more frequently in their card transaction data. Consistent with our previous measures for firm size---PPP loan amount and bank statement cash inflows---the average card revenue for Black-owned firms is about half of that for the other groups, at \$23,169, compared to about \$43,000 for Hispanic- and Asian-owned firms, and \$58,355 for White-owned firms.
+
+%%%%%%%%%%%%%
+%%% First analysis %%%
+%%%%%%%%%%%%%
+
+\section{Who Lent to Minority Borrowers, and Why?}\label{analysis_first}
+
+We begin this section by exploring whether certain types of lenders were more likely to extend PPP loans to borrowers of a particular race or ethnicity. We next ask whether any disparities are explained by three types of baseline characteristics that represent obvious hypotheses for lender differentiation: borrower size, industry, and location. Finally, we examine the role of pre-existing banking and credit relationships, firm financial conditions, and borrower application behavior. 
+
+We first illustrate the main descriptive statistics. Panel A of Figure \ref{f:bl50} shows the share of PPP loans originated by each lender type made to Black-owned businesses in (see also Panel A of Table \ref{t_stats_samples}). Only 3.4\% of PPP loans originated by small banks went to Black-owned business. At large banks including the Top-4, Black-owned firms represent between 4\% and 8\% of loan recipients. At the top end of the spectrum, CDFIs made 10.9\% and fintech lenders made 26.8\% of their loans to Black-owned firms. Appendix Table \ref{t_stats_fintech} shows that while there is some variation across fintech lenders in the Black share of borrowers, this disparity is not driven by one or two lenders. Panel B of Figure \ref{f:bl50} shows the share of all loans to Black-owned businesses by lender type (see also Panel A of Table \ref{bank_statements}). Fintech lenders were responsible for 53.4\% of PPP loans to Black-owned businesses in our sample. We find similar results using only PPP loans with self-reported data on owner race (see Appendix Figure \ref{f:bl_self}).
+
+CDFIs' large share of lending to Black-owned businesses is consistent with their mission to provide financial services to economically disadvantaged individuals within underserved communities. The reasons for the large share of lending to Black-owned businesses by fintech lenders are less obvious as they do not, in general, have a mission to serve a particular racial or ethnic group more than others. Unlike traditional lenders, fintech lenders have no physical presence, often focus on lending rather than a broader set of financial services, and rely heavily on self-service and automated underwriting. 
+
+We present the same figures for the other three racial and ethnic groups in our data in Appendix Figures \ref{f:hisp50}-\ref{f:white50}. Key summary statistics for all the racial and ethnic groups are in Table \ref{bank_statements}. Black-owned businesses exhibit by far the most striking disparity across lender types, in particular between fintech and all other lender types. A primary objective of the rest of the paper is to assess a variety of plausible mechanisms for the observed disparities across lender types in lending to Black-owned businesses.
+
+\subsection{Observable Loan and Borrower Characteristics}
+
+While the raw differences in the share of loans to Black-owned businesses by fintech lenders are striking, they may reflect the unique characteristics of those businesses. Black-owned firms receive the smallest PPP loans, with a mean amount of \$20,267, compared to about \$52,000 for Hispanic- and Asian-owned firms, and \$110,474 for White-owned firms (Table \ref{bank_statements} Panel A). Similarly, while 63.5\% of all businesses obtaining PPP loans are employer businesses, only 16.9\% of Black-owned businesses obtaining PPP loans are employers. These characteristics, in particular the differences by loan size, could explain some of the differential lending rates. As Section \ref{data} explains, lenders were compensated for originating PPP loans with a fixed fraction of the loan amount. In the presence of fixed costs or capacity constraints, this would incentivize lenders to first process the largest loans, which were disproportionately given to non-minority-owned businesses. If capacity constraints or fixed costs were smallest among fintech lenders (and largest among small banks), this could explain some of the differential lending rates across bank types to Black-owned businesses.
+
+In the next step, we explore the propensity for Black-owned businesses to obtain their PPP loans from fintech or other lenders in a multivariate regression framework represented by equation \ref{eq2}.\vspace{-.2cm}
+
+ \begin{equation}\label{eq2}
+    BankType_i=\beta BlackOwned_i + \mathbf{X}_i\delta + \varepsilon_{i}.
+  \end{equation}
+
+\noindent The dependent variable, $BankType_i$, is an indicator for whether a PPP borrower gets their loan from a certain type of lender. The key explanatory variable is an indicator for whether a firm is Black-owned, as defined in the previous section. For example, when $BankType_i = Fintech_i$, the coefficient $\beta$ measures the higher propensity (in percentage points) for Black-owned businesses of obtaining a PPP loan from a fintech lender.  The vector $\mathbf{X}_i$ captures control variables that vary across specifications.
+
+Unconditionally (i.e., with no controls), we find that Black-owned businesses were 39.7 percentage points more likely to obtain their PPP loan from a fintech lender than from other lenders (Column 1 of Panel A of Table \ref{regs_racefintech_fe}). In column 2, we include fixed effects for each percentile for the loan size distribution. Despite Black-owned PPP borrowers having much smaller loans on average, controlling for loan amount explains only a small part of the disparity. Conditional on loan size, Black-owned businesses remain 31.6 percentage points more likely to borrow from a fintech lender.
+
+As many traditional lenders focus their operations on certain parts of the country and the Black population is not evenly distributed (see Appendix Figure \ref{f:geography}), we also consider geography. In column 3, we include firm zip code fixed effects, and in column 4, we include firm census tract fixed effects. Including controls for the location of the business has a sizable effect on the $R^2$ of the regression. It also reduces the excess probability that Black-owned businesses obtain PPP loans from fintech lenders to 23.2 percentage points (in the model with zip code fixed effects), consistent with traditional lenders lending less in locations with more minority-owned businesses \citep[see][]{erel2020does}. Indeed, in Appendix Table \ref{black_share_zip} we verify that all businesses located in areas with high minority ownership---even businesses in those areas that are owned by White individuals---were somewhat more likely to obtain their PPP loans through fintech lenders. There are a number of possible explanations for these findings, including a choice by conventional lenders about where to locate bank branches that played an important role in processing PPP applications from local businesses. Overall, it appears that lenders' geographic focus can explain some, but not all (and not even the majority) of the racial gap in the propensity to borrow from different types of lenders.\footnote{In addition, to the extent that one is interested in assessing the overall effect of various forms of discrimination in the small business credit market, the choices of different lenders of where to place their branches may also be affected by such forces.} An important question for future research is why traditional lenders are less likely to serve borrowers of all races when they are located in high-minority neighborhoods. While differently-sized loans have a differential profitability to lenders, other characteristics, such as firm location, should not affect the profitability of extending the federally-guaranteed PPP loans. 
+
+In the next step, we explore the role of the timing of the PPP application. Initially, only a few fintech lenders were approved to participate, with the rest entering in the subsequent months. If Black-owned businesses were more likely to obtain their PPP loans later in the program, then this may have led to a natural relationship between race and the propensity to obtain PPP loans through a fintech lender. Indeed, Figure \ref{f:loans_week}  shows how the number of fintech loans (Panel A) and total PPP loans to Black-owned businesses (Panel B) increased over time.\footnote{Consistent with this, Appendix Table \ref{PPP_Round_Characteristics} shows that the share of loans made by fintech lenders and the share of loans made to Black-owned businesses both increased as the PPP program matured.} These similar patterns could either reflect a coincidence, whereby Black-owned businesses may have only learned about and applied for the program in later periods when more fintech lenders were included, or a causal relationship, whereby the absence of fintech lenders in the early stages of the program are part of the reason why Black applicants struggled to obtain PPP loans during that period. After including ``week of approval'' fixed effects, in addition to the prior controls in column 5, of Table \ref{regs_racefintech_fe} Panel A, the estimated $\beta$-coefficient remains at an economically large 17.5 percentage points.\footnote{In Appendix Table \ref{table_f:round_nocontrols} we estimate equation \ref{eq2} separately for loans approved in each of the four phases of the PPP program. This is also shown in Appendix Figure \ref{f:round_nocontrols}.  The main takeaway from Table \ref{regs_racefintech_fe} is consistent across rounds: fintech lenders made a much larger share of their loans to Black-owned businesses compared to traditional lenders.} Therefore, a coincidence in timing cannot explain much of the disparity.
+
+In columns 6 to 8 of Table \ref{regs_racefintech_fe} Panel A, we explore the role of industry, business type, and employer status.\footnote{Borrower industry is captured with NAICS 3-digit industry fixed effects. Examples of industries in this classification scheme are ``Health and Personal Care Stores,'' ``Truck Transportation,'' and ``Food Services and Drinking Places.'' Table \ref{bank_statements} Panel A shows that business type and industry distribution differ by owner race. For instance, Black-owned businesses are substantially more likely to be self-employed or sole proprietorships and less likely to be corporations or LLCs.} Importantly, column 7 includes zip-by-industry interacted fixed effects, in case lenders perceive certain industries in certain areas differently. In our most richly controlled model, the unexplained excess share of loans to Black-owned businesses by fintech lenders is 12.1 percentage points (column 8). This represents 70\% of the mean chance of a fintech loan (throughout the paper, we report the mean of the dependent variable towards the bottom of the table).\footnote{Appendix Table \ref{regs_racefintech_fe_emp} repeats this exercise but restricts to the sample of employer firms only. Although the magnitude of the coefficients decreases somewhat, they remain robust and are much larger relative to the mean chances of a fintech loan. With our full set of controls in column 8, Black-owned employer firms are 7.5 percentage points more likely to get a fintech loan, which is 77\% of the mean.} 
+
+We repeat these models using self-reported race in Appendix Table \ref{regs_selfid_racefintech_fe} Panel A. The sample is restricted to the subset of roughly one million loans for which race/ethnicity is reported in the SBA data. In this smaller and selected sample, the results are quite similar to the main findings, though the magnitudes are somewhat larger. Note that in the main analysis, we use only predicted race; while self-reported race is used to train the random forest algorithm, we do not replace predicted race with self-reported race where self-reported race exists. Therefore, when predicted and self-reported race do not agree, the data in these models departs from those in our main models. 
+
+In sum, fintech lenders made a substantially larger share of their loans to Black-owned businesses than traditional lenders did, a disparity that does not appear for other racial or ethnic groups. Controlling for a rich set of observable loan and borrower characteristics can jointly explain 69\% of the higher chance that Black-owned businesses borrow from fintech lenders ($.69=\frac{.397-.121}{.397}$). Since many of the characteristics are correlated, it is challenging to attribute a relative importance to each of these factors, and changing the order in which we include these controls in Table  \ref{regs_racefintech_fe} changes their relative contribution to reducing the estimate of $\beta$. The key point for our analysis, however, is that 31\% of the gap remains unexplained. 
+
+\paragraph*{Across-Bank Heterogeneity.}
+
+If Black-owned businesses are more likely to get their PPP loans from fintech lenders, which types of lenders does this substitution come from? We explore this in Panel B of Table  \ref{regs_racefintech_fe}, where we replace $ BankType_i$ in equation \ref{eq2} with an indicator for obtaining the PPP loan from a Top-4 bank (Bank of America, Wells Fargo, Citi, JP Morgan), a large bank, or a small/medium bank. Unconditionally, Black-owned businesses were less likely to get their loans from all of these types of banks, consistent with the findings in Table \ref{t_stats_samples}. However, after including controls, this relationship is near-zero for the Top-4 banks, and the majority of the 12.1 percentage point fintech disparity in column 8 of Panel A is accounted for by lower rates of small/medium bank PPP lending to Black-owned businesses. Specifically, Black-owned businesses are 30 percentage points less likely to get their PPP loans from a small bank (column 5), and 8.1 percentage points less likely in the fully controlled model (column 6).\footnote{Note, however, that the 2.5 percentage points effect identified for non-Top-4 large banks corresponds to a larger share of their unconditional mean probability of originating any loan, at 26\%, than the 8.1 percentage points effect at medium and small banks, at 17\% of the mean.}$^{,}$\footnote{We visualize the across-lender patterns by comparing all 11 types of lending institutions simultaneously in Figure \ref{f:race_controls}. Here, we show the degree to which the lender types were statistically different one one another in their propensity to lend to each of the four racial and ethnic groups, conditional on our rich array of controls. The fraction of fintechs' loans that were to Black-owned businesses was over five percentage points higher than the fraction for other lender types. MDIs made a disproportionate share of their loans to  Asian-owned businesses. Note that the reversal for MDIs in Hispanic loans relative to the summary statistics reflects the location control; in particular, a very large MDI in Puerto Rico.} The results using self-reported race in Appendix Table \ref{regs_selfid_racefintech_fe} Panel B are similar, except that the smaller bank disparity is larger (columns 5-6).
+
+The heterogeneity across different types of conventional banks is relevant for understanding the potential role of compliance with Know-Your-Customer and Anti-Money-Laundering (KYC/AML) regulations. The Top-4 banks, as international institutions with charters in all or most U.S. states, are the most tightly regulated banks \citep{united2009too}. Consequently, the fact that, conditional on controls, the most-regulated and least-regulated entities in our sample---the Top-4 banks and the fintech lenders---had the highest probability of granting PPP loans to Black-owned businesses makes differential compliance standards an unlikely explanation. Instead, as we propose in section 2.4, the degree of automation, which is particularly high at both fintechs and the Top-4 banks, is much more consistent with our evidence. 
+
+We are also interested in whether small banks' low rates of lending to Black-owned businesses reflect higher rates of lending to all other races or to one race in particular. Panel C of Table  \ref{regs_racefintech_fe} includes indicators for the three other races and ethnicities as explanatory variables. Since the four racial and ethnic groups span the data, the coefficients should be interpreted as the probability of obtaining a PPP loan from a particular lender type relative to the probability for Black-owned businesses. To the degree they did substitute, Top-4 and large banks shifted towards Asian- and Hispanic-owned businesses at roughly equal or higher rates as towards White-owned businesses (columns 3-6). However, after including controls, there is zero difference between Black- and White-owned businesses in the chances of getting a PPP loan from a Top-4 bank (column 4).  In contrast,  on a percentage point basis, small- and medium-sized banks lent particularly more to White-owned businesses  (columns 7-8). For example, unconditionally, White-owned businesses are 35 percentage points more likely than Black-owned businesses to get their PPP loans from smaller banks (column 7). With controls, this gap remains an economically large 10 percentage points, and we continue to find similar results using self-reported race (Appendix Table \ref{regs_selfid_racefintech_fe} Panel C).  
+
+\paragraph*{Strength of Algorithm's Race Signal.}  
+
+In our baseline analysis, we assign every individual the race with the highest probability from our machine learning algorithm. We next explore whether, among individuals assigned as Black, the strength of the race signal predicts variation in PPP lender type. In particular, we divide all individuals predicted to be Black into five quintiles based on the algorithm's predicted probability that they are Black (see Section \ref{race_predict} for the full distribution of this probability). Individuals in the 5th quintile deliver the strongest signal that they are Black to lenders given their name and location; they are also the most likely to actually self-identify as Black. 
+
+Table \ref{regs_race_signal} shows that the magnitude of our main results increases monotonically with the signal strength. As in Panels A and B of Table \ref{regs_racefintech_fe}, the omitted group is all borrowers not predicted to be Black. Panel A shows that across the quintiles of increasing probability that the business owner is Black, the chances of having a fintech loan increase. In the fully controlled model in column 8, Black-owned businesses in the first quintile are only 4.3 percentage points more likely than other groups to have a fintech loan. In the third quintile they are 12.7 percentage points more likely, and in the fifth quintile they are 24.7 percentage points more likely. Similarly, Panel B explores the probability of obtaining loans from conventional lenders, again with the most striking differences among small- and medium-sized banks (columns 5-6). Conditional on controls, borrowers in the first quintile are 3.1 percentage points less likely to get a small/medium bank loan, while those in the fifth quintile are 15.2 percentage points less likely to do so. In sum, these results help to validate the algorithm and point to a potentially important role for the degree of ``Blackness" as suggested by the audit literature \citep{bertrand2004emily}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% BANK RELATIONSHIPS, REVENUE %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Borrower Bank Relationships and Financial Situation}\label{analysis_bank}
+
+In this section, we explore the importance of two channels that may help explain why the propensity of Black-owned business to obtain PPP loans varies across lender types: differences in pre-existing banking and credit relationships, and differences in firm financial health.
+
+\paragraph{Pre-existing Banking Relationships.} A number of observers of the PPP program have highlighted that many banks tended to first serve their own clients' PPP loan applications, which may have distorted allocations away from the government's intended ``first come first serve" approach  \citep{nytmin,ap_ppp, li2020supplies}.\footnote{There are a number of explanations for prioritizing PPP applications from existing customers. First, it may have been cheaper to process these applications. Second, this might be optimal for banks if receiving a PPP loan increases the chances that a borrower repays existing loans, including possible loans to the PPP lender \citep{granja2020}. Third, even in the absence of an existing credit relationship between banks and their clients, banks might prioritize existing clients if they perceived a positive net present value from the relationships, and receiving a PPP loan would improve the chances of those clients surviving.} If banks indeed prioritized administering PPP loan applications from their own clients, and if Black-owned businesses did not bank with active PPP lenders, this could explain some of the observed differences in their propensity to eventually borrow from other lenders such as fintech firms. 
+
+To quantify the effect of pre-existing banking relationships, we turn to the sample of PPP borrowers matched to bank statement data. Indeed, we find that conventional banks' PPP clients were also often their business checking account clients. Panel C of Table \ref{t_stats_loan} shows that 28.5\% of PPP borrowers had a checking account at their PPP lender; of the PPP loans originated by large banks and the Top-4 banks, more than 50\% went to existing checking account customers. For fintech lenders, which do not usually offer checking accounts, this number was essentially zero.\footnote{Table \ref{bank_statements} Panel B shows that within the bank statement-matched sample, Black-owned businesses are the most likely, at 15.8\%, to have their checking account with a lender that is not a traditional bank. Black-owned businesses have similar or slightly higher chances of having a credit relationship with another non-fintech lender in this sample, though this could reflect business credit cards which represent a more arms-length relationship than traditional small business loans.}  
+
+Although larger banks served their own clients at high rates, we show in Table \ref{racefintech} that this fact does not explain the higher rate of fintech PPP loans for Black-owned businesses. First, we estimate our fully controlled model  from Table \ref{regs_racefintech_fe}, Panel A, column 8, in the bank statement-matched sample. Here, Black-owned businesses are 5.5 percentage points more likely to obtain their PPP loan from a fintech lender (column 1). Selection into having a checking account could help explain the smaller effect size; that is, the larger gap in the full sample could reflect Black-owned businesses being less likely to have \textit{any} banking relationships, and therefore less likely to have a ``house bank'' prioritizing their PPP loan application. However, we do not find this explanation compelling. If Black-owned firms were less likely to have a business checking account, we would expect their share of the bank statement-matched sample -- which conditions on having some checking account -- to be smaller than their share of the full analysis sample. As shown in Panel B of Table \ref{t_stats_samples}, we do not find this to be the case. Instead, we believe that the somewhat smaller magnitude in the bank statement-matched sample likely reflects a higher rate of clients with fintech affinity, which would raise the share of fintech PPP loans among borrowers of all races and ethnicities.
+
+In Column 2 of Table \ref{racefintech}, we add fixed effects for the identity of the bank where the firm has a checking account. In this model we are comparing, for example, the origination of PPP loans to Black-owned firms and other firms with a checking account at JP Morgan Chase. The inclusion of these fixed effects has essentially no effect on the estimated probability of Black-owned businesses to obtain their PPP loans from fintech firms. Therefore, the observed racial difference in this probability is not driven by Black-owned firms holding their checking accounts at banks that were less active as PPP lenders.
+
+We next assess whether, with controls, banks differed in their propensity to serve their own checking account clients in the PPP. On average, Black-owned businesses were between 1.1 and 1.7 percentage points less likely to obtain their PPP loans from their checking account banks (Table \ref{racefintech}, Panel B,  columns 7-8). In Table \ref{regs_bychecking}, we split the sample of checking account holders to document that this effect reflects racial variation in PPP lending to checking account customers at non-Top-4 banks. Among firms with checking accounts at Top-4 banks (Panel A), we find no differential probability of Black-owned businesses to obtain their PPP loans from their checking account bank. Black-owned businesses with checking accounts at large banks are less likely to obtain their PPP loans from their checking account banks (Panel B), with smaller and less significant effects for firms that bank with small/medium banks (Panel C).\footnote{Anecdotes from the popular press offer examples of Black-owned businesses failing to obtain PPP loans through their checking account banks. For example, the Associated Press interviewed Lisa Marsh, who is Black and the owner of MsPsGFree, a Chicago-based gluten-free baking business \citep{ap_ppp}: ``Lisa Marsh tried in vain to get banks to process her application. She first applied in June but she couldn’t get answers on her status from her bank, a subsidiary of a big national bank. She also got nowhere with smaller community banks...[Marsh] finally applied through an online lender in late July and got her loan a few days before the PPP ended. “I was very frustrated and almost gave up,” she says." In a similar story, the New York Times described Black auto dealership owner Jenell Ross who, ``sought a Paycheck Protection Program loan, [but] her longtime bank told her to look elsewhere"  \citep{nytmin}. In the absence of formal statistical analysis like the one we provide, it is obviously impossible to say whether such challenges were disproportionately encountered by Black-owned businesses.} 
+
+In Column 2 of Table \ref{regs_bychecking}, we show that Black-owned firms' differential chance of getting a fintech loan is similarly high regardless of where they have their checking account, even for borrowers with checking accounts at Top-4 banks. Instead, the higher rate of fintech loans appears to be related to a lower probability of a non-Top-4 bank loan (columns 3-4). In other words, among those borrowers  who go to a different lender than their checking account bank, Black-owned businesses are much more likely to obtain their PPP loan from a fintech lender, and less likely to obtain it from a non-Top-4 bank.
+	
+Overall, these findings suggest two channels through which Black-owned businesses shifted towards fintech lenders. First, Black-owned firms with checking accounts at non-Top-4 banks were somewhat less likely to obtain their PPP loans from their checking account bank. Second, among firms that obtained PPP loans outside their checking account banks (both Black-owned and non-Black-owned firms), Black-owned firms were much less likely to obtain loans from non-Top-4 banks, and much more likely to obtain them from fintech lenders. Quantitatively, the second channel explains a much larger share of the observed disparity.
+
+\paragraph{Pre-existing Credit Relationships.}  We next explore the role of prior credit relationships. Specifically, in column 3 of Table \ref{racefintech} Panel A, we include indicators for whether a PPP borrower has credit relationships with any fintech firms and any non-fintech firms. Unsurprisingly, previous credit from a fintech lender is associated with a significantly higher chance of obtaining a PPP loan from a fintech lender. At the same time, columns 2, 4, and 6 of Panel B show that it reduces the likelihood of getting a loan from all types of traditional banks. Similarly, having previously received credit from a non-fintech lender reduces the likelihood of getting a fintech PPP loan as businesses are more likely to get their PPP loans from these other lenders. 
+
+The preferential treatment of firms with prior credit relationships, however, does not account for the disproportionate lending to Black-owned businesses by fintech lenders in the PPP program: Black-owned businesses are 5.6 percentage points more likely to get their PPP loan from a fintech lender compared to other PPP borrowers, even after conditioning on the identity of the checking account bank and the presence of credit relationships with both fintech and non-fintech lenders (Table \ref{racefintech} column 3). This is in part because, within the bank statement-matched sample, there are no large differences across races in having various credit relationships (see Table \ref{bank_statements}, Panel B).
+
+\paragraph{Firm Financial Health.} We next explore whether the differential financial performance of minority-owned firms can explain the remaining observed disparities in PPP lending. Recall that PPP lenders were not responsible for any  loan losses; therefore, creditworthiness should be irrelevant to the one-shot decision of making a PPP loan. However, lenders may nonetheless have been more likely to lend to businesses in better financial positions--for example, because they might represent more attractive future customers. There could also be some stickiness in behavior among loan officers who are used to screening for creditworthiness, causing them to screen on financial information as they do in their usual course of business.
+
+Table \ref{bank_statements} Panel B shows that gross and net inflows among Black-owned businesses are, at the median, less than half of their values for the other racial groups, though this is largely driven by those businesses being smaller in general. To assess whether these differences affect our results after conditioning on firm size, we first add controls for a firm's gross and net cash inflows from the most recent bank statement data in column 4 of Table \ref{racefintech}, using percentiles for the distribution of each variable. With these controls, Black-owned businesses remain 5.5 percentage points more likely to receive a fintech loan, suggesting that the cash-flow situation of borrowers does not explain the observed differences.\footnote{We repeat Table \ref{racefintech} splitting up the other races in Appendix Table \ref{white_racefintech}. We also repeat Panel B after excluding fintech loans from the sample in Appendix Table \ref{regsbanknofintech} (as in Table \ref{regs_nofintech_fe}). We continue to find similar results. For example, these regressions show that, after controlling for bank and credit relationships as well as cash flows, small banks are significantly more likely than other non-fintech lenders to serve White-owned businesses.}
+	
+We also assess whether differences in contemporaneous revenue explain the observed disparity. In particular, if lenders treated Black-owned firms differently because they were doing relatively poorly during the pandemic, controlling for revenue should eliminate the disparity. Our data on credit and debit card spending from Enigma allows us to observe the firm over the course of the COVID-19 economic crisis and PPP loan application period. We use these data to control for revenue around the time of application.  We show results using the card revenue-matched sample in Table \ref{regs_racefintech_cardrev}. We continue to include all controls available in the PPP data. Given the sample differences highlighted in Section \ref{data_card}, we first re-estimate the main model to establish a baseline. Column 1 shows that Black-owned firms are 1.6 percentage points more likely to get a fintech PPP loan in this sample, or 17\% of the mean.  In this sample,  Black-owned firms  are slightly more likely to get their PPP loans from Top-4 banks (columns 3-4), and substantially less likely to get PPP loans from small- and medium-sized banks (columns 7-8). Importantly, adding fixed effects for 100 equal sized groups of credit card revenue has no effect on this disparity, as was true for cash flows observed in the bank statement data. This pattern continues to hold when we measure revenue only in the approval month (Appendix Table \ref{regs_racefintech_cardrev_appmonth}).\footnote{In Panel B of Table \ref{regs_racefintech_cardrev}, we restrict the sample to firms that appear especially harmed by the COVID-19 economic crisis. These are firms for which we observe monthly revenue in February 2020 but not in the approval month. Note that we do not observe revenue if there are fewer than 30 transactions. Therefore, these ``struggling" firms have either no activity or limited activity relative to February. We repeat our main models from Table  \ref{regs_racefintech_fe}  within this sample of ``struggling" firms. Column 1 shows that on average, with no controls, Black-owned businesses are 9.4 percentage points (about 90\% of the mean) more likely to get a fintech loan in this sample. As in our full sample results, controls can account for about two-thirds of this effect. The first thing to notice is that the fully controlled model yields an estimate of 2.1 percentage points (Table \ref{regs_racefintech_cardrev} Panel B column 8). This is slightly larger than the same model estimated in sample of firms that do have revenue in the approval month, shown in column 1 of Panel A, but is not significantly different.} Hence, while the Enigma sample is clearly special in focusing on larger and more consumer-oriented firms among which Black-owned businesses appear to be at less of a disadvantage, we find no evidence that real-time revenue differences help explain the main findings.
+
+\subsection{Borrower Application Behavior}
+
+Our primary data includes only information on originated loans, and not the universe of loan applications. This leaves open the possibility that the differential rate at which Black-owned businesses end up borrowing from different types of lenders is the result of their application behavior. In this section, we therefore explore whether the observed equilibrium lending outcomes might in part be explained by Black-owned businesses being more likely to apply to fintech lenders than non-Top-4 conventional lenders.
+
+\paragraph{Differential Fintech Affinity.}
+
+Black-owned businesses may have been more likely to apply to fintech firms, perhaps because they were more tech savvy or had higher fintech affinity.\footnote{A different possibility within the scope of application behavior is that because Black communities were disproportionally affected by COVID-19, and because banks are more associated with in-person interaction than fintechs, Black business owners were more likely to apply to fintechs in order to avoid in-person interaction. In unreported analysis, we find that COVID-19 prevalence cannot explain the main finding. Even in areas with low COVID-19 cases and deaths, Black-owned businesses were substantially more likely to receive fintech PPP loans.} To test this hypothesis, in Panel D of Table \ref{regs_bychecking}, we condition on firms in the bank statement-matched data that we observe having a pre-existing credit relationship with fintech firms. Within this sample of firms, all of which have shown a certain degree of past fintech affinity, we continue to find, for Black-owned businesses, a substitution from small and medium banks and towards fintech lenders. This reduces the likelihood that the results are driven by an increased affinity of Black-owned businesses for fintech lenders.  
+
+\paragraph{Analysis within PPP Application Data from Lendio.}
+
+For some borrowers who applied for a PPP loan through Lendio, a marketplace platform for small business loans, we have information on the set of lenders to which Lendio forwarded the application. Specifically, Lendio is a platform through which businesses could submit PPP applications. Lendio then forwarded these applications to around 300 partner lenders with whom it has relationships, some of which are fintechs and some of which are conventional banks. Our conversations with Lendio executives, including CEO Brock Blake, suggest that routing was random conditional on loan size, geography, and capacity criteria set by the lender partners. Banks then had the opportunity to follow up with the applicant firms to complete the application. In these data, we can assess whether Black-owned businesses remain more likely to ultimately get a fintech loan conditional on the types of banks Lendio forwards these loans to.
+
+We obtained data on all loan applications from Lendio up until November 2020. The data include applications from about 267,000 firms, about 176,000 of which we can link to final PPP loans in our data. Either we were unable to match the remaining applicants to firms in the main dataset, or they never got a PPP loan. In our analysis, we focus on the sample that ultimately received PPP loans, since this is the sample for which we can generate our race proxy. We divide the lenders who ultimately originated the loans into two groups: fintech and conventional lenders (where conventional includes all other lender types). The main sample characteristics according to this split are summarized in Panel C of Table \ref{t_stats_samples}. About half the PPP loans to firms that put in a Lendio application were originated by fintech lenders, a result that is perhaps unsurprising given that Lendio is an online platform. The share of Black borrowers across conventional and fintech lenders, as well as the average difference in loan size, however, is quite similar to the bank statement and main samples. Additional characteristics are in Panel C of Table \ref{bank_statements}. For example, the average application was routed to 1.5 lenders, of which 0.9 were fintechs and 0.6 were conventional.
+
+In Table \ref{lendio}, we again present results using variations of Equation \ref{eq2}. As with the bank statement-matched  data, we establish a baseline in this sample by first replicating the result from Table \ref{regs_racefintech_fe} Panel A, Column 8 within the Lendio sample. The result, in Column 1 of Table \ref{lendio}, shows that, conditional on the full set of controls, Black-owned businesses are 2.9 percentage points more likely to obtain their PPP loan from a fintech lender. This smaller disparity compared to our baseline estimate likely reflects the composition of lenders that Lendio partners with. To show this, in column 2, we explore a sample of PPP loans originated by lenders that Lendio partners with, but in which the firm did not apply through Lendio (thereby removing any additional effects that might occur due to selection into the Lendio data). The coefficient of 2.6 percentage points is very similar to the previous column, indicating that the smaller baseline disparity likely reflects lender composition.
+
+Next, in column 3, we add interacted fixed effects for the number of lenders to which Lendio routed the application in both the fintech and conventional categories. The disparity remains at 2.8 percentage points, suggesting that differential application behavior by Black-owned businesses has at most a small role. This points to lender decision-making playing a role, because we have now controlled to a very large extent for application behavior. In Column 4, we restrict the sample to loan applications that were sent to at least one conventional lender, while Column 5 focuses on applications that were sent only to conventional lenders. Both control for the number of lenders the application was sent to in each category. These models find Black-owned businesses to be 4.8 and 3.9 percentage points more likely to ultimately have a fintech loan, respectively. Importantly, this is a large share of the dependent variable since, unsurprisingly, most of these applications do get conventional loans. For example, the estimate in column 5 suggests that Black-owned businesses are 3.9 percentage points (36\% of the mean) more likely to get a fintech loan than non-Black-owned businesses, \textit{even} when Lendio only sent their application to conventional lenders. These Black-owned firms obtained fintech PPP loans outside of Lendio. 
+ 
+These results suggest that Black-owned businesses receive fintech loans at substantially higher rates as a result of how different lenders treat Black loan applicants, rather than racial differences in the probability of applying to conventional lenders versus fintech lenders.
+
+\subsection{Discrimination: The Role of Racial Animus} \label{sec:disc}
+
+In this final section, we explore whether preference-based discrimination may contribute to explaining some of the remaining disparity between fintechs and smaller conventional lenders in their propensity to serve Black-owned businesses. This channel would involve some bias among loan officers during the manual review and processing of PPP applications. Such manual involvement of loan officers was relatively common among conventional lenders, especially among smaller and medium-sized banks. For example, one industry article profiled the approach of The Piedmont Bank, Georgia, a small SBA-preferred lender:\begin{quote}``While The Piedmont Bank considered some automated, online solutions, they ultimately decide to process the applications manually...Everyone who works there is preparing to put in long hours and a lot of elbow grease. They know they’re going up against big banks and their automated systems." \citep{smith2020}\end{quote}  As a second example, an industry article mentions that: \begin{quote}``In the initial round of the Paycheck Protection Program, First Bank in Hamilton, N.J., leaned on its bankers rather than technology to help small businesses stay afloat. That manual labor “ironically turned out to be a good thing, because we had people helping small businesses through the process, and they had a number and name to talk to,” said Patrick Ryan, president and CEO of the \$2.3 billion-asset bank." \citep{Cross2020}\footnote{As a third example, RCB Bank of Oklahoma and Kansas does not even allow borrowers to apply online for PPP loan forgiveness, but instead states that ``A Loan Officer will contact you to discuss your forgiveness eligibility and provide you with the appropriate loan application via DocuSign" (see \href{https://rcbbank.com/sba-paycheck-protection-program-forgiveness-information/}{RCB Bank Example}). As a fourth example, Skip advised customers that ``While many lenders spent the time to automate processes and increase their throughput, many have not and may be doing manual review" (see \href{https://helloskip.com/blog/what-happens-if-you-are-rejected-for-a-ppp-loan/}{Skip Example}).}\end{quote}
+
+\noindent When reviewing PPP loan applications, loan officers may become aware of applicant race through a number of channels. One is visually through manual review of driver's licenses, which were required (in color) for all applicants.\footnote{See \href{https://www.sba.com/funding-a-business/government-small-business-loans/ppp/how-to-complete-paycheck-protection-program}{SBA Directive}.} A second avenue is through information such as the applicant's name, which we have shown to be highly predictive of race.\footnote{Most Americans can infer race for a large fraction of names, perhaps not with the accuracy of our algorithm, but well enough to lead to systematic bias, as field experiments have documented \citep{bertrand2004emily,milkman2012temporal,bartovs2016attention}.} 
+
+If preference-based discrimination contributed to the observed higher probability of otherwise similar Black-owned businesses obtaining a PPP loan through a fintech lender, we would expect this gap to be larger in regions with higher racial animus. We next explore this hypothesis and find that Black-owned businesses are indeed more likely to get their PPP loans from fintech lenders (and less likely to get them from small- or medium-sized banks) in regions with higher racial animus.
+
+\paragraph*{Racial Animus Data.}
+
+We collect six measures of racial animus at the local level.  The first measure comes from \cite{stephens2013cost}, and is calculated at the level of the designated media market. It measures the percentage of an area's Google searches that contain racially charged words. The second measure follows \cite{bursztyn2021immigrant} and is based on how favorably White respondents rate Black Americans as a group in the Nationscape survey; individual responses are aggregated up to the congressional district level \citep{tausanovitch2020democracy}. The third measure of racial animus is based on the Implicit Association Test (IAT), which measures implicit bias against Black individuals. The fourth measure is based on a survey question that explicitly asks individuals who just took the IAT for their feelings towards Black Americans. These IAT-based measures are aggregated up to the county-level \citep{xu2014psychology}. The last two measures of racial animus are based on the extent of local residential segregation \citep{massey1988dimensions}. The first of these, the dissimilarity index, measures how similar the distribution of White and Black residents are across city tracts. A more uneven distribution indicates higher residential segregation. The second is the isolation index, which measures the probability of a Black resident sharing the same city tract with another Black resident. The higher this measure, the more isolated Black residents are from the rest of the population. The segregation measures are available at the county level. Appendix \ref{a_racialbias} describes these measures of racial animus in more detail, and examines their geographic variation and the degree to which they are correlated with one another. Importantly, Appendix Figure \ref{race_map} shows that the places where racial animus is high differ substantially across our measures, indicating that they offer relatively independent signals of animus.
+
+\paragraph*{Differential Effects by Racial Animus.}
+
+Table \ref{regs_animus} estimates 
+whether, for a Black-owned firm, the probability of obtaining a PPP loan from different lenders varies with the degree of racial animus in its location. In Panels A, B, and C, the dependent variable is an indicator for obtaining a PPP loan from a fintech, a Top-4 bank, and a non-Top-4 bank, respectively. In each panel, column 1 includes the same controls as the specification in column 8 of Panel A, Table \ref{regs_racefintech_fe}.  In columns 2-7, we interact our indicator for Black-owned businesses with each of the proxies for racial animus. The location fixed effects absorb any direct effect of racial animus on the probability of borrowing from fintech lenders that is constant across all borrowers. Each measure of racial animus  is standardized to have a mean of zero and a standard deviation of one, so the coefficients can be interpreted as the effect, in percentage points, of a one standard deviation increase in the racial animus measure.
+
+In Table \ref{regs_animus} Panel A, where we consider the probability of obtaining a PPP loan from a fintech lender, we find a robust positive interaction between the various racial animus measures and Black ownership. The coefficient magnitudes vary from 0.4 to 2.9 percentage points. This implies that, relative to the mean chances of a fintech loan of 17.4\%, a one standard deviation increase in racial animus is associated with a 2.3\% to 17\% increase in the probability that a Black-owned business obtains their PPP loan from a fintech lender. With the implicit bias (IAT) measure---which is probably the most widely used in academic literature---the coefficient of 1.3 percentage points implies a 7.5\% increase. In sum, while the magnitude of the relationship varies across measures, we find robust evidence that in areas with higher animus, Black-owned businesses are more likely to obtain their PPP loans from fintech lenders. 
+
+We repeat this exercise for Top-4 banks in Panel B. Here we see near-zero coefficients on the interaction, which flip signs across the animus measures. This is consistent with our previous analysis finding no racial differences in the probability of obtaining a PPP loan from a Top-4 bank. In contrast, we see a robust negative relationship for non-Top-4 banks in Panel C. For these lenders, we find that higher racial animus makes Black-owned firms less likely to receive their PPP loans from non-Top-4 banks. The coefficient using the implicit bias (IAT) measure of -2.4 percentage points implies that a one-standard-deviation higher racial animus score is associated with a 4.2\% decrease in the probability of Black-owned businesses obtaining their PPP loans from non-Top-4 lenders. In Appendix Table \ref{regs_animus_ocr}, we repeat these three panels within the bank statement-matched sample and find similar results, even after controlling for the identity of the checking account bank and financial performance.
+
+\paragraph*{Automation as a Mechanism.} 
+
+Throughout our analysis, we find that smaller banks account for most of the lower rate of PPP lending to Black-owned businesses, particularly in models with controls for observed borrower characteristics. In contrast, after including controls, we find no evidence of racial differences in the probability of borrowing from Top-4 banks. Together with the disproportionate role of fintechs in lending to Black-owned businesses and the findings in the previous section, these facts are consistent with automation as a mechanism that reduces the incidence of discrimination. 
+
+Largely automated loan origination processes are core to the fintech business model. While we do not have systematic data on the degree of automation by bank, there is substantial survey and anecdotal evidence indicating that automation increases in bank size and is particularly widespread at the very largest banks. For example, one industry article notes that ``Large banks have avidly adopted robotic process automation...It's tougher for smaller banks to follow suit" \citep{Crosman2020}. A 2018 \href{https://www.fanniemae.com/media/20256/display}{Fannie Mae} survey found that 76\% of large banks but only 47\% of small banks were familiar with artificial intelligence or machine learning  technology. Humans---with all their biases---likely played a much larger role in the loan origination process at the smaller banks.\footnote{A final and colorful example from a media report is that:  “In community banking, when you’re closing a loan, you’re probably closing it with a lady or gent you went to high school with, maybe on the hood of a Cadillac at a Friday night football game or Sunday after church. Those things are nice, but they don't scale." \citep{Cross2020}}
+
+In this last section, we present further evidence that automation played a substantial role. We exploit the fact that, during the PPP loan period, some small banks automated their loan origination processes, showing that their subsequent rate of lending to Black-owned businesses disproportionately increased relative to other similar small banks. For this analysis, we were able to identify 12 small banks that automated their lending processes during the second round of the PPP, motivated by the influx of applications.\footnote{These automating banks made about 86,000 PPP loans in our sample. They are: Capstar Bank, TN; Citizens Bank and Trust Company, LA; First Home Bank, FL; First Horizon Bank, TN; First Savings Bank, IN; Hancock Whitney Bank, MS; Huntingdon Valley Bank, PA; Northeast Bank, ME; Queensborough National Bank and Trust Company, GA; Surrey Bank and Trust, NC; Valley National Bank, NJ; and Vista Bank, TX.} Many of the banks automated using Numerated's platform.  Although we do not always know the exact date of automation, the banks generally automated their processes during a period centering around early June, 2020. For example, one bank official \href{https://www.numerated.com/platform/cares-act-ppp-lending}{attested} that “Compared to 10 days of manual lending, with every bank resource that we had, in terms of volume of new loans generated, we were able to do it in 2 days with [Numerated].” As a second example, a news article explains that: 
+
+\begin{quote}``When HV Bancorp in Doylestown, Pennsylvania, first went live with the Paycheck Protection Program last April, “we just had bodies in front of keyboards using the Small Business Administration’s E-Tran system and entering applications,” said Hugh Connelly, chief lending officer in the business banking division of Huntingdon Valley Bank...The urgency of the Paycheck Protection Program propelled community banks to find a speedier way to disburse loans to small businesses than relying on phone and email. Many turned to software to originate loans, automate the underwriting process, collect documents and transmit the information to the SBA's processing system \citep{Cross2020}."\end{quote}
+
+\noindent In Figure \ref{f:auto}, we show the share of PPP loans these banks made to Black-owned businesses before and after the automation. The statistics in the graph are calculated by first collapsing the loans in our analysis sample by bank-period, where period is either before or after the automation date (here June 1, 2020), and then taking the average across the 12 banks. The automating banks' Black share of borrowers increased from 3.5\% before automation to 10\% afterward, or by 186\%. Since the total share of loans to Black-owned businesses also increased over time (see Figure \ref{f:loans_week}), we also show similar statistics for a set of matched banks before and after the same date.\footnote{The matched sample is constructed by looking at all small banks that we believe did not automate, filtering out banks that do not serve loans after 2020, and then selecting the one in the focal bank's same state with the nearest asset size. The matched banks made about 26,000 PPP loans in our sample. Our findings are robust to alternative matching procedures.} Before automation, the matched banks had almost the exact same share of loans to Black-owned businesses. Afterward the automation date, the share of PPP loans to Black-owned businesses among the control banks also increased, but by much less than that of the automating banks. This supports the conjecture that there may be significant equity benefits from automation.
+
+%%%%%%%%%%%%
+%%% Conclusion %%%
+%%%%%%%%%%%%
+
+\section{Conclusion}
+
+The original legislation authorizing the PPP included an explicit mandate to prioritize socioeconomically disadvantaged businesses. Yet, in practice, many conventional bank lenders did not serve Black-owned businesses in proportion to their share in the PPP borrower population. Instead, it was fintech firms that made a disproportionate share of loans to Black-owned businesses, accounting for over half of the PPP loans to Black-owned businesses. Conversely, we find that after including controls, the Top-4 banks exhibited no racial disparities in their lending patterns. Why would this have occurred given that PPP loans were 100\% guaranteed by the federal government? This question is the focus of our paper. 
+
+We show that a rich array of basic borrower characteristics---including location, loan amount, loan approval date, industry, and business form---can explain about two thirds of the disparity between fintechs and other lenders. However, even after these controls, Black-owned businesses remain about 12 percentage points more likely than other firms to get their PPP loan from a fintech lender. Much of this substitution towards fintech lenders comes from a lower propensity of Black-owned businesses to get loans from smaller banks. We show that differential pre-existing bank relationships, real-time revenue, fintech affinity, and application behavior cannot fully explain this gap. 
+
+We find suggestive evidence consistent with a role for preference-based discrimination \a` la \cite{becker1957economics} in explaining some of the lower rates of lending to Black-owned businesses among conventional lenders. Specifically, we show that the observed differences are larger in areas with higher racial animus. We also present evidence that automation may help explain why disparate treatment is concentrated among smaller banks, and document that the rate of lending to Black-owned businesses at a number of small banks increased substantially after these banks began to automate their lending processes. These results suggest an important potential equity benefit from automation in lending, which deserves further study.
+
+
+%%%%%%%%%%%%
+%%% References %%%
+%%%%%%%%%%%%
+\newpage
+\singlespacing{\bibliography{cl_sg_bib}}
+\bibliographystyle{aer}
+
+%%%%%%%%%%
+%%% Figures %%%
+%%%%%%%%%%
+
+% Figure: Black-owned PPP lending by institution type
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Black-Owned Business PPP Lending by Institution Type}} \label{f:bl50}
+	\centering
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Loans to Black-Owned Business by Institution Type}
+		\centering
+		\includegraphics[width=0.8\textwidth]{../Output/share_black_loans_by_lender.pdf}
+		\vspace{0.5cm}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Lender Institution Type among Black-Owned Business}
+		\centering
+		\includegraphics[width=0.8\textwidth]{../Output/share_lender_for_black.pdf}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the shares of PPP loans made by originating lender type to Black-owned businesses. Panel A shows the Black share of PPP loans made by originating lender type ($P(\text{Black-owned} | \text{Originating Lender Type})$). Panel B shows the shares of PPP loans from originating lender type made to Black-owned businesses ($P(\text{Originating Lender Type} | \text{Black-owned})$).}
+	\end{minipage}
+\end{figure}
+
+% Figure: Share black loans by week
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Black-Owned Businesses PPP Lending by Week}} \label{f:loans_week}
+	\centering
+	\begin{subfigure}{\linewidth}
+		\caption{Black-Owned Business PPP Lending by Week}
+		\centering
+		\includegraphics[width=.8\linewidth]{../Output/black_share_by_week.pdf}
+		\vspace{0.5cm}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\caption{Fintech PPP Lending by Week}
+		\centering
+		\includegraphics[width=.8\linewidth]{../Output/fintech_share_by_week.pdf}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows shares of PPP loans made to Black-owned businesses (Panel A) and made by Fintech lenders (Panel B) by week of loan approval. Note that there was a hiatus in the PPP program from August 2020 to January 2021, a gap not shown in the figure.}
+	\end{minipage}
+\end{figure}
+
+
+% Figure: Share loans to each race by lender type
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Conditional Share of PPP Loans to Each Race by Institution Type}} \label{f:race_controls}
+
+	\begin{adjustbox}{width=1.05\linewidth, center}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{Black-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/black_predimp_max_fullcontrol.pdf}
+		\end{subfigure}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{White-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/white_predimp_max_fullcontrol.pdf}
+		\end{subfigure}
+	\end{adjustbox}
+	\vspace{0.5cm}
+
+	\begin{adjustbox}{width=1.05\linewidth, center}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{Hispanic-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/hisp_predimp_max_fullcontrol.pdf}
+		\end{subfigure}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{Asian-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/asian_predimp_max_fullcontrol.pdf}
+		\end{subfigure}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows shares of PPP loans made to businesses predicted to be Black-owned by originating lender type. Each graph presents coefficients from variants of the following regression: $\mbox{Black-owned}_i = \beta \mbox{Lender Type}_i + \gamma \bf{X}_i + \epsilon_i$, where $\bf{X}_i$ is a vector of fixed effects for borrower zip code, loan amount percentile (in 100 bins), approval week, 3-digit NAICS industry, business type and employer status. Standard errors are clustered by zip code. In each panel, we change the dependent variable to be an indicator for whether a borrower is a Black- (Panel A), White- (Panel B), Hispanic- (Panel C) or Asian- (Panel D) owned business.}
+	\end{minipage}
+\end{figure}
+
+
+% Figure: Automation
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Share of Loans to Black-Owned Businesses Before and After Small Bank Automation}} \label{f:auto}
+	\centering
+	 		\includegraphics[width=.8\linewidth]{../Output/matched_auto_1jun2020.pdf}
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows shares of PPP loans made to Black-owned businesses by different groups of small banks. For 12 banks ("automating banks") we identified that they automated during a period centering around the beginning of June, 2020. We compare loans made by these 12 before and after this date. We also show the share of loans to Black-owned businesses for a set of matched banks around this same date for comparison. The matched sample is constructed by looking at all small banks not in our sample, filtering out banks that do not serve loans after 2020 and selecting the one in the focal bank's same state with the nearest asset size.}
+	\end{minipage}
+\end{figure}
+
+
+
+%%%%%%%%%%
+%%% Tables %%%
+%%%%%%%%%%
+% Table: Summary statistics by lender type
+\newpage
+\begin{table}[H]
+	\caption{Summary Statistics by Lender Type} \label{t_stats_loan}
+	
+		\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_table_1_panela.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_table_1_panelb.tex}
+	\end{adjustbox}
+
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/financial_by_lender_a_n.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports summary statistics about PPP loans by originating lender type, where each PPP loan is assigned to a single type. The data in Panel A include all PPP loans, including ``second draw" loans, which is a firm's second PPP loan (accounting for about 2.8 million loans). Panel B repeats the statistics in our starting sample, which is composed of first draw PPP loans between April 3, 2020 and February 23, 2021. All subsequent statistics and analysis are drawn from subsamples of the data included in Panel B. Panel C reports statistics about banking and credit relationships as well as financial performance from those borrowers in the sample of bank statements. The first column, "SME has Checking Account with PPP Lender" means that the borrower's business checking account bank is the same institution that originated their PPP loan. The remaining variables are derived from transactions on the borrowers' most recent monthly bank statement. In this table, we include all loans, regardless of whether race is populated. Appendix Table \ref{t_stats_loan_app} repeats Panels B and C for the subset with predicted race.}
+	\end{minipage}
+\end{table}
+
+% Table: Share by Race -- Sample Chars
+\newpage
+\begin{table}[H]
+	\caption{Sample Characteristics} \label{t_stats_samples}
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/small_merge_comparison_an.tex}
+	\end{adjustbox}
+
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/small_merge_comparison_oc.tex}
+	\end{adjustbox}
+
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/small_merge_comparison_le.tex}
+	\end{adjustbox}
+\end{table}
+
+\setcounter{table}{1}		
+
+\newpage
+\begin{table}[H]
+	\caption{Sample Characteristics \textit{(Continued)}} 
+	
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/small_merge_comparison_eg.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table shows loan characteristics and borrower race and ethnic breakdown by lender type. Panel A includes the analysis sample (all loans for which we can predict race). Panel B restricts to the bank statement-matched sample, which includes borrowers for whom we observe a bank statement \textit{prior} to the PPP loan approval date. Panel C restricts to the Lendio-matched sample. We limit the Lendio sample to borrowers whose loan approval date is after their Lendio application date and are sent to at least one lender by Lendio. Panel D restricts to the Enigma-matched sample. We limit the Enigma sample to borrowers for whom we observe card revenue prior to loan approval.}
+	\end{minipage}
+\end{table}
+
+
+%Table: Summary by race
+\newpage
+\begin{table}[H]
+	\caption{Summary Statistics by Predicted Race} \label{bank_statements}
+ 	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_by_race_an.tex}
+	\end{adjustbox}
+\end{table}
+
+% Table: Summary by race (cont.)
+\setcounter{table}{2}										% resets the table counter to 2 so then the following table is 3
+\newpage
+\begin{table}[H]
+	\caption{Summary Statistics by Predicted Race \textit{Continued}}
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_by_race_oc.tex}
+	\end{adjustbox}
+
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_by_race_le.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_by_race_eg.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports loan and bank statement characteristics and card revenue for the four predicted borrower races and ethnicities. Panel A provides loan and firm characteristics for the full analysis sample. Panel B summarizes the banking and credit relationships, and cashflows for the bank statement-matched sample. Panel C summarizes for the Lendio sample that is linked to SBA PPP loan data the types of lenders to which Lendio routed PPP applications. ``Conventional" includes all non-fintech lenders. Panel D summarizes for the card revenue (Enigma) sample that is linked to SBA PPP loan data the business' average and median monthly card revenue at loan approval and the prior two and eleven months.}
+	\end{minipage}
+\end{table}
+
+% Table: Fintech predicts race
+\newpage
+\begin{table}[H]
+	\caption{Business Owner Race and PPP Lender Type} \label{regs_racefintech_fe}
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/add_fixed_effects_panela.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/add_fixed_effects_panelb.tex}
+	\end{adjustbox}
+\end{table}
+\begin{landscape}
+    \begin{table}[H]
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/add_fixed_effects_panelc.tex}
+        \end{adjustbox}
+        \begin{minipage}{\linewidth} \medskip
+            \footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2}. The dependent variable in panel A is an indicator for whether the originating lender is fintech. Panel B repeats the specifications in columns 1 and 8 for indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), a Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). Panel C repeats Panel B, but adds two columns for fintech loans and considers the other three race/ethnicities. Here, Black-owned businesses represent the single omitted group, so the coefficients should be interpreted relative to them. Control variables all pertain to the borrower firm and their particular PPP loan. Loan Amount FE are 100 indicator variables for each percentile of the loan size distribution. Zip Code and Census Tract FE are indicators for each zip code and census tract. Approval Week FE are indicators for the week in which the PPP loan was approved by SBA. Industry FE are 104 indicators for NAICS 3-digit classifications that appear in the data. Business type FE are 7 indicators for the firm's business type (see Table \ref{bank_statements}). Employer status is an indicator for whether the firm has at least one employee. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+        \end{minipage}
+    \end{table}
+\end{landscape}
+
+
+% Table: Fintech predicts race by signal strength
+\newpage
+\begin{table}[H]
+	\caption{Signal Strength of Black Business Ownership and PPP Lender Type} \label{regs_race_signal}
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/add_fixed_effects_panela_signal.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=.92\linewidth}
+		\input{../Output/add_fixed_effects_panelb_signal.tex}
+	\end{adjustbox} 
+         \begin{minipage}{\linewidth} \medskip
+            \footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2}. The independent variables are quintiles of the probability that the business owner is Black-owned, within the subset of individuals predicted to be Black by our algorithm. The algorithm predicts an individual to be Black if that is the highest probability race/ethnicity. In the regression models, the omitted group is all borrowers predicted not Black (as in Table \ref{regs_racefintech_fe} Panels A-B). Dependent variables and controls are as described for Table  \ref{regs_racefintech_fe}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+        \end{minipage}
+    \end{table} 
+
+
+% Table: Black Race predicts fintech with bank rel controls
+    \begin{table}[H]
+    	\caption{Black Business Ownership and PPP Lender Type with Bank and Credit Relationship Controls} \label{racefintech}
+    	\begin{adjustbox}{width=.85\linewidth, center}
+    		\input{../Output/within_bank_table_cashfe_panela.tex}
+    	\end{adjustbox}
+    	\begin{adjustbox}{width=\linewidth, center}
+    		\input{../Output/within_bank_table_cashfe_panelb.tex}
+    	\end{adjustbox}
+    	\begin{minipage}{\linewidth} \medskip
+    		\footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2}, focusing on the role of bank and credit relationships. The sample is restricted to bank statement-matched data. We include only information from a firm's latest statement prior to the loan approval. The dependent variable in Panel A is an indicator for whether a PPP loan is originated by a fintech lender. The dependent variables in Panel B are indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). We report coefficients on indicators for whether the borrower has previous credit relationships with fintech and non-fintech lenders. Checking Account Bank FE are indicators for the bank where the borrower has its main business checking account, so that we compare borrowers who bank with the same institution. Net Cash Inflow FE and Cash Inflow FE are each a set of 100 indicators for monthly net cash inflow and total cash inflow, respectively. Other controls are as described in Table \ref{regs_racefintech_fe}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+    	\end{minipage}
+    \end{table}
+    
+% Table: PPP lender by checking bank type
+\newpage
+\begin{table}[H]
+	\caption{Black Business Ownership and PPP Lender Type by Checking Account Bank Type}\label{regs_bychecking}
+	\begin{adjustbox}{width=.98\linewidth, center}
+		\input{../Output/table6_by_bank_type.tex}
+	\end{adjustbox}
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}, focusing on various samples of firms with different checking account bank and credit relationships. Panels A and B limit the sample to PPP borrowers with checking accounts at Top-4 and non-Top-4 banks, respectively. Panel C limits the sample to PPP borrowers who has previous credit relationship with fintech lenders. Across all panels, the dependent variable in column 1 is an indicator for whether a PPP loan is originated by the borrower's checking account bank. The dependent variables in columns 2--4 are indicators for whether a PPP loan is originated by a fintech lender, Top-4 bank, and non-Top-4 bank, respectively. Controls are as described in Tables \ref{regs_racefintech_fe} and \ref{racefintech}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+	\end{minipage}
+\end{table}
+
+% Table: Bank white and black panels
+\newpage
+\begin{table}[H]
+	\caption{The Relationship between Business Owner Race and PPP Lender Type (Excluding Fintech Lenders from Sample)} \label{regs_nofintech_fe}
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/nofintech_add_fixed_effects_panelb.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/white_nofintech_add_fixed_effects_panelb.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2} on the sample excluding PPP loans from fintech lenders. The independent variable in Panel A is an indicator for whether the borrower is a Black-owned business. The independent variable in Panel B is an indicator for whether the borrower is a White-owned business. In both panels, the dependent variables are indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). Control variables all pertain to the borrower firm and their particular PPP loan. Loan Amount FE are 100 indicator variables for each percentile of the loan size distribution. Zip Code FE are indicators for each zip code. Approval Week FE are indicators for the week in which the PPP loan was approved by SBA. Industry FE are 104 indicators for NAICS 3-digit classifications that appear in the data. Business type FE are 7 indicators for the firm's business type (see Table \ref{bank_statements}). Employer status is an indicator for whether the firm has at least one employee. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+	\end{minipage}
+\end{table}
+
+% Table: Enigma card revenue controls
+\newpage
+    \begin{table}[H]
+    	\caption{Black Business Ownership and PPP Lender Type Top-4trols} \label{regs_racefintech_cardrev}
+    	\begin{adjustbox}{width=1.1\linewidth, center}
+    		\input{../Output/within_bank_cardrev_cardfe3.tex}
+    	\end{adjustbox}
+	    	\begin{adjustbox}{width=\linewidth, center}
+    		\input{../Output/add_fixed_effects_panela_failedeg.tex}
+    	\end{adjustbox}
+    	\begin{minipage}{\linewidth} \medskip
+    		\footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}. In Panel A, we add controls for firm revenue from credit and debit card transactions during and prior to the PPP loan approval month. The sample is restricted to those matched to Enigma data on credit and debit card transactions. We take the mean card revenue over the loan approval month and previous two months, then construct card revenue FE as a set of 100 indicators for each percentile of average monthly card revenue. In Panel B, we restrict the sample to firms that appear especially harmed by the COVID-19 economic crisis. These are firms for which we observe monthly revenue in February 2020 but not in the approval month. Note that we do not observe revenue if there are fewer than 30 transactions. Therefore, these ``struggling" firms have either no activity or limited activity relative to February. Other controls are as described in Table \ref{regs_racefintech_fe}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+    	\end{minipage}
+    \end{table}
+
+% Table: Loan applications through Lendio
+\newpage
+\begin{table}[H]
+	\caption{Black Business Ownership and Fintech PPP Loans using Loan Applications via Lendio} \label{lendio}
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/lendio_analysis_newft.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}, focusing on whether Black-owned firms that applied to conventional lenders via the Lendio platform were nonetheless more likely to end up with a fintech PPP loan. The sample is restricted to Lendio applications linked to a PPP loan in the SBA data. The dependent variable is an indicator for whether a PPP loan is originated by a fintech lender. Column 1 includes all merged Lendio applications. Column 2 assesses whether the coefficient magnitude in column 1 relative to Table \ref{regs_racefintech_fe} column 8 reflects Lendio partner lender composition. It uses the sample of non-Lendio PPP loans that were originated by the subset of lenders who appear in the Lendio data. Column 3 repeats column 1 but adds a set of indicators controlling for the number of lenders that an application was sent to in both the fintech and non-fintech (``conventional") categories and indicators for the week of Lendio application. Column 4 restricts the sample to borrowers who were sent to at least one conventional lender. Column 5 restricts the sample to borrowers who were sent only to conventional lenders; that is, borrowers who were sent to both fintech and conventional lenders are excluded from the sample. Other controls are as described in Table \ref{regs_racefintech_fe}. Standard errors are clustered by zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}%This table is complex to understand and I wanted a fuller description so people can get an idea if they only look at the tables.
+	\end{minipage}
+\end{table}
+
+% Table: Racial animus and PPP lending: Fintechs, Top 4, Small Banks
+\newpage
+    \begin{table}[H]
+        \caption{The Relationship between Black Business Ownership and Fintech PPP Loans Mediated by Racial Animus} \label{regs_animus}
+  	    \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/combined_animus_table_full_sample_n.tex}
+  	    \end{adjustbox}
+ 
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/combined_animus_table_full_sample_tb_n.tex}
+        \end{adjustbox}
+         
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/combined_animus_table_full_sample_sb_n.tex}
+        \end{adjustbox}
+
+        \begin{minipage}{\linewidth} \medskip
+            \footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}, focusing on the interaction between the indicator for Black-owned business and a standardized measure of racial animus in the borrower location. The dependent variable differs across the three panels: In Panel A, it is an indicator for a fintech PPP loan, in Panel B, it is an indicator for a Top-4 bank PPP loan, and in Panel C, it is an indicator for a non-Top 4 bank PPP loan. In each panel, column 1 includes the same controls as the specification in Table \ref{regs_racefintech_fe} Panel A column 8. The racial animus measures are as follows: column 2 uses the number of racially charged searches in a designated media market (DMA); column 3 uses responses to the question on favorability toward Black people in the Nationscape survey aggregated to the congressional district level; columns 4--5 use the implicit and explicit score from the Implicit Association Test (IAT) aggregated to the county level; columns 6--7 use the dissimilarity and isolation index at the metropolitan statistical area (MSA) level. All racial animus measures are standardized at their respective levels of geography, weighted by the number of PPP loans.  Controls are as described in Tables \ref{regs_racefintech_fe} and \ref{racefintech}. Standard errors are clustered by zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+        \end{minipage}
+    \end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%
+%%% Appendix options %%%
+%%%%%%%%%%%%%%%
+
+\setcounter{table}{0} \renewcommand{\thetable}{A.\arabic{table}}											%make table start from A1
+\setcounter{figure}{0} \renewcommand{\thefigure}{A.\arabic{figure}} \setcounter{page}{1}							%make figures start from A1
+\setcounter{section}{0} \renewcommand\thesection{\Alph{section}}											%make sections A, B, C...
+\setcounter{page}{0} \renewcommand\thepage{\arabic{page}}												%make page number start from 0
+\fancypagestyle{alim}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\fancyfoot[C]{Internet Appendix \thepage}}		%define footer page style for appendix
+\pagestyle{alim}																				%make page numbers Appendix 1, 2, 3...
+
+%%%%%%%%%%%%%
+%%% Appendix title %%%
+%%%%%%%%%%%%%
+
+\vspace*{\fill}
+\thispagestyle{empty}
+\begin{center}
+\textcolor{white}{}\\
+\textbf{\textcolor{black}{\LARGE{} Appendix}}{\Large\par}
+\par\end{center}
+
+\begin{center}
+\textcolor{black}{(For Online Publication)}\\
+\textcolor{white}{sss}
+\par\end{center}
+\vspace*{\fill}
+
+%%%%%%%%%%%%%%%
+%%% Appendix figures %%%
+%%%%%%%%%%%%%%%
+
+% Figure: Predicted Race Prob Distributions
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Race Probability Distributions}} \label{f:race_dist}
+
+	\begin{adjustbox}{width=1.05\linewidth, center}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{Black-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/black_predimp_max_prob.pdf}
+		\end{subfigure}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{White-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/white_predimp_max_prob.pdf}
+		\end{subfigure}
+	\end{adjustbox}
+	\vspace{0.5cm}
+
+	\begin{adjustbox}{width=1.05\linewidth, center}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{Hispanic-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/hisp_predimp_max_prob.pdf}
+		\end{subfigure}
+		\begin{subfigure}{0.5\linewidth}
+			\caption{Asian-Owned Businesses}
+			\centering
+			\includegraphics[width=\linewidth]{../Output/asian_predimp_max_prob.pdf}
+		\end{subfigure}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the probability distribution for each race generated by our algorithm. Specifically, each graph contains the sample of borrowers predicted by the algorithm to be the particular race, which means that the race has the highest probability. For example, Panel A contains the subset of borrowers whose highest probability race is Black. The graph shows the algorithm's predicted chance that they are Black.}
+	\end{minipage}
+\end{figure}
+
+% Figure: Black PPP lending by institution type; self identified borrowers
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Black-Owned Business PPP Lending by Institution Type (Self-Reported)}}\label{f:bl_self}
+	\centering
+	\includegraphics[width=\textwidth]{../Output/share_black_loans_by_lender_selfid.png}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: } This figure shows shares of PPP loans made to businesses that self-identify as Black-owned by lender type. The sample limits to loans to business for which the data includes self-reported race.}
+	\end{minipage}
+\end{figure}
+
+% Figure: Hispanic PPP lending by institution type
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Hispanic/Latinx-Owned Business PPP Lending by Institution Type}} \label{f:hisp50}
+	\centering
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Loans to Hispanic/Latinx-Owned Business by Institution Type}
+		\centering
+		\includegraphics[width=0.75\textwidth]{../Output/share_hisp_loans_by_lender.png}
+		\vspace{0.5cm}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Lender Institution Type among Hispanic/Latinx-Owned Business}
+		\centering
+		\includegraphics[width=0.75\textwidth]{../Output/share_lender_for_hisp.png}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the shares of PPP loans made by originating lender type to Hispanic/Latinx-owned businesses. Panel A shows the Hispanic/Latinx share of PPP loans made by originating lender type ($P(\text{Hispanic/Latinx-owned} | \text{Originating Lender Type})$). Panel B shows the shares of PPP loans from originating lender type made to Black-owned businesses ($P(\text{Originating Lender Type} | \text{Hispanic/Latinx-owned})$).}
+	\end{minipage}
+\end{figure}
+
+% Figure: Asian PPP lending by institution type
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Asian-Owned Business PPP Lending by Institution Type}} \label{f:asian50}
+	\centering
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Loans to Asian-Owned Business by Institution Type}
+		\centering
+		\includegraphics[width=0.75\textwidth]{../Output/share_asian_loans_by_lender.png}
+		\vspace{0.5cm}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Lender Institution Type among Asian-Owned Business}
+		\centering
+		\includegraphics[width=0.75\textwidth]{../Output/share_lender_for_asian.png}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the shares of PPP loans made by originating lender type to Asian-owned businesses. Panel A shows the Asian share of PPP loans made by originating lender type ($P(\text{Asian-owned} | \text{Originating Lender Type})$). Panel B shows the shares of PPP loans from originating lender type made to Asian-owned businesses ($P(\text{Originating Lender Type} | \text{Asian-owned})$).}
+	\end{minipage}
+\end{figure}
+
+% Figure: White PPP lending by institution type
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{White-Owned Business PPP Lending by Institution Type}} \label{f:white50}
+	\centering
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Loans to White-Owned Business by Institution Type}
+		\centering
+		\includegraphics[width=0.75\textwidth]{../Output/share_white_loans_by_lender.png}
+		\vspace{0.5cm}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\caption{Share of PPP Lender Institution Type among White-Owned Business}
+		\centering
+		\includegraphics[width=0.75\textwidth]{../Output/share_lender_for_white.png}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the shares of PPP loans made by originating lender type to Asian-owned businesses. Panel A shows the Asian share of PPP loans made by originating lender type ($P(\text{Asian-owned} | \text{Originating Lender Type})$). Panel B shows the shares of PPP loans from originating lender type made to Asian-owned businesses ($P(\text{Originating Lender Type} | \text{Asian-owned})$).}
+	\end{minipage}
+\end{figure}
+
+% Figure: Geographic Distribution of PPP loans to Black borrowers
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Geographic Distribution of PPP Loans to Black-Owned Businesses}}\label{f:geography}
+	\centering
+	\begin{subfigure}{\linewidth}
+		\caption{PPP Borrowers (Analysis Sample)}
+		\centering
+		\includegraphics[width=.87\textwidth]{../Output/shareblk_ppp_map.png}
+	\end{subfigure}
+
+	\begin{subfigure}{\linewidth}
+		\caption{Black Share of Population}
+		\centering
+		\includegraphics[width=0.87\textwidth]{../Output/share_pop_map.png}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }Panel A of this figure shows the geographic distribution of PPP loans to Black-Owned businesses. Panel B shows the geographic distribution of the Black population, measured as the share of Black people in the county. These data are from the 2019 U.S. Census Bureau ACS.}
+	\end{minipage}
+\end{figure}
+
+% Figure: Share of Black PPP loans by round
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Black-Owned Business PPP Lending by Institution Type and Round}} \label{f:round_nocontrols}
+	\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+		\caption{Round 1 (4/3/2020--4/16/2020)}
+		\centering
+		\includegraphics[width=\textwidth]{../Output/share_black_loans_by_lender_round_1.png}
+		\vspace{0.5cm}
+	\end{subfigure}%
+	\hfill%
+	\begin{subfigure}[b]{0.5\textwidth}
+		\caption{Round 2 Early (4/27/2020--5/13/2020)}
+		\centering
+		\includegraphics[width=\textwidth]{../Output/share_black_loans_by_lender_round_2_early}
+		\vspace{0.5cm}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{0.5\textwidth}
+		 \caption{Round 2 Late (5/14/2020--8/9/2020)}
+		 \centering
+		 \includegraphics[width=\textwidth]{../Output/share_black_loans_by_lender_round_2_late}
+	\end{subfigure}%
+	\hfill%
+	\begin{subfigure}[b]{0.5\textwidth}
+		\caption{Round 3 (1/12/2021--2/23/2021)}
+		\centering
+		\includegraphics[width=\textwidth]{../Output/share_black_loans_by_lender_round_3}
+	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the shares of PPP loans made by originating lender type to Black-owned businesses by PPP round. Panel A limits the sample to Round 1 PPP approvals. Panel B limits the sample to Round 2 early approvals. Panel C limits the sample to Round 2 late approvals. We distinguish Round 2 late from early (where early is intended to represent the initial rush) by defining early as ending on the last day on which there were at least 30,000 loans issued. The results are not sensitive to using an alternative threshold. Panel D limits the sample to Round 3 approvals.}
+	\end{minipage}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%
+%%% Appendix Tables %%%
+%%%%%%%%%%%%%%%
+
+% Table: List of fintechs
+\newpage
+\begin{table}[H]
+	\caption{List of fintechs} \label{t_stats_fintech}
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_table_3.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table lists the firms we identify as fintech lenders. We report their number of loans, their median loan amount, and the share of their PPP loans made to Black-owned businesses.}
+	\end{minipage}
+\end{table}
+
+% Appendix Table: Summary statistics by lender type for sample with race
+\newpage
+\begin{table}[H]
+	\caption{Summary Statistics by Lender Type for Sample with Predicted Race} \label{t_stats_loan_app}
+	
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/summary_table_1_panelb_nonmissingrace.tex}
+	\end{adjustbox}
+
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/financial_by_lender_a_n_nonmissingrace.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports summary statistics about PPP loans by originating lender type, where each PPP loan is assigned to a single type. We restrict the sample to loans for which we can predict the business owner's race. The data in Panel A include all PPP loans, including ``second draw" loans, which is a firm's second PPP loan (accounting for about 2.8 million loans). Panel B repeats the statistics in our starting sample, which is composed of first draw PPP loans between April 3, 2020 and February 23, 2021. All subsequent statistics and analysis are drawn from subsamples of the data included in Panel B. Panel C reports statistics about banking and credit relationships as well as financial performance from those borrowers in the bank statement-matched sample. The first column, "SME has Checking Account with PPP Lender" means that the borrower's business checking account bank is the same institution that originated their PPP loan. The remaining variables are derived from transactions on the borrowers' most recent monthly bank statement. }
+	\end{minipage}
+\end{table}
+
+
+% Table: Out of sample confusion matrix
+\newpage
+\begin{table}[H]
+	\caption{Race Prediction Out of Sample Confusion Matrix} \label{confusion_mat}
+	\begin{center}
+		\input{../Output/predimp_max_confusion_matrix_full.tex}
+	\end{center}
+	\begin{center}
+		\input{../Output/predimp_max_confusion_matrix.tex}
+	\end{center}
+		\begin{center}
+		\input{../Output/prob_by_predicted_race.tex}
+	\end{center}
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }Panel A of this table shows the race prediction of the random forest model for the full sample of self-reported individuals, including those on which the model was trained. We do not retain the Other prediction or use it in analysis. The sample is 1,040,477. Panel B of this table shows the out-of-sample validation of the random forest model. It is restricted to the hold-out sample of self-reported borrowers that was not used to train the random forest model, and contains 292,356 observations. (The random forest model with 1,000 trees was trained on 835,913 observations with self-reported race.) In both Panel A and B, the percents represent percent of total observations in the sample. Panel C contains summary statistics about the probability distributions by predicted race/ethnicity.}
+	\end{minipage}
+\end{table}
+
+
+% Table: Additional merge comparisons
+\newpage
+\begin{table}[H]
+	\caption{Additional Sample Characteristics}
+	\begin{adjustbox}{width=0.8\linewidth, center} \label{sample_comp_appendix}
+		\input{../Output/ocrolus_merge_comparison_small.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table shows additional summary statistics across three samples: all PPP loan sample, analysis sample for which we have successfully predicted borrower race, and the bank statement-matched sample. We highlight the distribution of the top-five 3-digit NAICS industry, and code the rest as ``Other."}
+	\end{minipage}
+\end{table}
+
+% Table: Employer vs. Nonemployer Share by Race -- Sample Chars
+\newpage
+\begin{table}[H]
+	\caption{Sample Characteristics for Employers and Non-employer Firms} \label{t_stats_samples_emp}
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/small_merge_comparison_emp.tex}
+	\end{adjustbox}
+
+	\begin{adjustbox}{width=\linewidth, center}
+		\input{../Output/small_merge_comparison_nonemp.tex}
+	\end{adjustbox}
+	
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table shows loan characteristics and borrower race and ethnic breakdown by lender type for employer firms (Panel A) and non-employer firms (Panel B).}
+	\end{minipage}
+
+\end{table}
+
+
+% Table: Relationship between share of black population in zip and fintech among black vs. white borrowers
+\newpage
+\begin{table}[H]
+	\caption{Fintech PPP Loans and the Zip Code's Black Share of Population} \label{black_share_zip}
+	\begin{center}
+		\input{../Output/zipshare_black_predict_fintech.tex}
+	\end{center}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}, focusing on the role of the Black population in the borrower firm's neighborhood. Columns 2-4 include a continuous variable for the Black share of population in a zipcode. Columns 3-4 limit the sample to only Black-owned and White-owned businesses, respectively. We include state FE (indicators for each U.S. state and territory). Other controls are as described in Table \ref{regs_racefintech_fe}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+	\end{minipage}
+\end{table}
+
+
+% Table: Round comparisons
+\newpage
+\begin{table}[H]
+	\caption{PPP Round Characteristics} \label{PPP_Round_Characteristics}
+	\begin{adjustbox}{width=0.9\linewidth, center}
+		\input{../Output/summary_by_round.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table shows summary statistics of PPP borrowers across the various PPP rounds for the analysis sample. Round 1: 4/3/2020–4/16/2020; Round 2 Early: 4/27/2020–5/13/2020; Round 2 Late: 5/14/2020–8/9/2020;  Round 3: 1/12/2021–2/23/2021. We highlight the distribution of the top-five 3-digit NAICS industry, and code the rest as ``Other."}
+	\end{minipage}
+\end{table}
+
+
+
+% Table: Black Borrowers and Fintech by Rounds
+\newpage
+\begin{table}[H]
+	\caption{The Relationship between Black Business Ownership and PPP Lender Type by PPP Round} \label{table_f:round_nocontrols}
+	\begin{center}
+		\input{../Output/regs_by_round.tex}
+	\end{center}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2}, specifically replicating the specification in Table \ref{regs_racefintech_fe} column 8 for each PPP round. We distinguish Round 2 late from early (where early is intended to represent the initial rush) by defining early as ending on the last day on which there were at least 30,000 loans issued. The results are not sensitive to using an alternative threshold. Controls are as described in Table \ref{regs_racefintech_fe}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+	\end{minipage}
+\end{table}
+
+% Table: Fintech predicts race (employers only)
+\newpage
+\begin{table}[H]
+	\caption{The Relationship between Black Business Ownership and PPP Lender Type - Employer Firms Only} \label{regs_racefintech_fe_emp}
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/emp_add_fixed_effects_panela.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/emp_add_fixed_effects_panelb.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2} on the sample consisting of only employer firms. The dependent variable in panel A is an indicator for whether the originating lender is fintech. Panel B repeats the specifications in columns 1 and 8 for indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), a Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). Control variables all pertain to the borrower firm and their particular PPP loan. Controls are as described in Table \ref{regs_racefintech_fe}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+	\end{minipage}
+\end{table}
+
+
+% Table:  Other races  predicts fintech with bank rel controls
+\newpage 
+    \begin{table}[H]
+    	\caption{The Relationship between Other Race Business Ownership and PPP Lender Type with Bank and Credit Relationship Controls} \label{white_racefintech}
+  	    \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/white_within_bank_table_cashfe_panela.tex}
+  	    \end{adjustbox}
+    \end{table} 
+
+\newpage 
+    \begin{table}[H]
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/white_within_bank_table_cashfe_panelb.tex}
+        \end{adjustbox}
+
+        \begin{minipage}{\linewidth} \medskip
+            \footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}, focusing on the role of bank and credit relationships and using indicators for the three other races/ethnicities.   The sample is restricted to those matched to  bank statement data. In all columns except for Panel A Column 5, we include only information from a firm's latest statement prior to the loan approval. Panel A Column 5 includes only the latest statement if it is within six months of loan approval. The dependent variable in Panel A is an indicator for whether a PPP loan is originated by a fintech lender. The dependent variables in Panel B are indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). We report coefficients on indicators for whether the borrower has previous credit relationships with fintech and non-fintech lenders. Controls are as described in Table \ref{racefintech}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+        \end{minipage}
+    \end{table} 
+
+
+% Appendix Table: Fintech predicts SELFID race
+\newpage
+\begin{table}[H]
+	\caption{The Relationship between Self-Reported Business Owner Race and PPP Lender Type} \label{regs_selfid_racefintech_fe}
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/selfid_add_fixed_effects_panela.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/selfid_add_fixed_effects_panelb.tex}
+	\end{adjustbox}
+\end{table}
+\begin{landscape}
+    \begin{table}[H]
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/selfid_add_fixed_effects_panelc.tex}
+        \end{adjustbox}
+        \begin{minipage}{\linewidth} \medskip
+            \footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2}. The independent variables are the self-reported race/ethnicity of the borrower, and the sample is restricted to the subset of loans for which race/ethnicity is self-reported. Note that in the main analysis, we use only predicted race (self-reported race is used to train the random forest algorithm, but does not replace the prediction for self-reported observations). The dependent variable in panel A is an indicator for whether the originating lender is fintech. Panel B repeats the specifications in columns 1 and 8 for indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), a Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). Panel C repeats Panel B, but adds two columns for fintech loans and considers the other three race/ethnicities. Here, Black-owned businesses represent the single omitted group, so the coefficients should be interpreted relative to them. Control variables all pertain to the borrower firm and their particular PPP loan. Loan Amount FE are 100 indicator variables for each percentile of the loan size distribution. Zip Code and Census Tract FE are indicators for each zip code and census tract. Approval Week FE are indicators for the week in which the PPP loan was approved by SBA. Industry FE are 104 indicators for NAICS 3-digit classifications that appear in the data. Business type FE are 7 indicators for the firm's business type (see Table \ref{bank_statements}). Employer status is an indicator for whether the firm has at least one employee. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+        \end{minipage}
+    \end{table}
+\end{landscape}
+
+
+ % Table: Bank white and black panels
+\newpage
+\begin{table}[H]
+	\caption{The Relationship between Business Owner Race and PPP Lender Type with Bank and Credit Relationship Controls (Excluding Fintech Lenders from Sample)} \label{regsbanknofintech}
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/nofintech_within_bank_table_cashfe_panelb.tex}
+	\end{adjustbox}
+	
+	\begin{adjustbox}{width=\linewidth}
+		\input{../Output/white_nofintech_within_bank_table_cashfe_panelb.tex}
+	\end{adjustbox}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This table reports estimates of Equation \ref{eq2} on the Ocrolus bank statement matched sample excluding PPP loans from fintech lenders. The independent variable in Panel A is an indicator for whether the borrower is a Black-owned business. The independent variable in Panel B is an indicator for whether the borrower is a White-owned business. In both panels, the dependent variables are indicators for whether the originating lender is the borrower's checking account bank (columns 1--2), Top-4 bank (columns 3--4), large bank (columns 5--6), and small/medium-sized bank (columns 7--8). Control variables all pertain to the borrower firm and their particular PPP loan. Controls are as described in Table \ref{racefintech}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+	\end{minipage}
+\end{table}
+
+
+
+ % Table: Enigma card revenue controls -- within approval month
+\newpage
+    \begin{table}[H]
+    	\caption{How Race Predicts Fintech with Card Revenue Controls within Approval Month} \label{regs_racefintech_cardrev_appmonth}
+    	\begin{adjustbox}{width=\linewidth, center}
+    		\input{../Output/within_bank_cardrev_cardfe.tex}
+    	\end{adjustbox}
+    	\begin{minipage}{\linewidth} \medskip
+    		\footnotesize{{\bf Note: }This table reports estimates of a modified Equation \ref{eq2}, focusing on the role of firm revenue during the PPP loan approval month. The sample is restricted to those matched to Enigma data on credit and debit card transactions. Controls are as described in Table \ref{regs_racefintech_cardrev}. Standard errors are clustered by borrower zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+    	\end{minipage}
+    \end{table}
+
+
+
+
+% Appendix Table: OCROLUS sample Racial animus and PPP lending: Fintechs, Top 4, Small Banks
+\newpage
+\begin{landscape}
+    \begin{table}[H]
+        \caption{The Relationship between Black Business Ownership and Fintech PPP Loans Mediated by Racial Animus in the Bank Statement-Matched Sample} \label{regs_animus_ocr}
+  	    \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/combined_animus_table_ocr_sample_n.tex}
+  	    \end{adjustbox}
+    \end{table}
+\end{landscape}
+
+\newpage
+\begin{landscape}
+    \begin{table}[H]
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/combined_animus_table_ocr_sample_tb_n.tex}
+        \end{adjustbox}
+    \end{table}
+\end{landscape}
+
+\newpage
+\begin{landscape}
+    \begin{table}[H]
+        \begin{adjustbox}{width=\linewidth, center}
+            \input{../Output/combined_animus_table_ocr_sample_sb_n.tex}
+        \end{adjustbox}
+        
+        \begin{minipage}{\linewidth} \medskip
+            \footnotesize{{\bf Note: }This table repeats Table \ref{regs_animus} but within the bank statement-matched (Ocrolus) sample. It reports estimates of a modified Equation \ref{eq2}, focusing on the interaction between the indicator for Black-owned business and a standardized measure of racial animus in the borrower location. The dependent variable differs across the three panels: In Panel A, it is an indicator for a fintech PPP loan, in Panel B, it is an indicator for a Top-4 bank PPP loan, and in Panel C, it is an indicator for a non-Top 4 bank PPP loan. In each panel, column 1 includes the same controls as the specification in Table \ref{regs_racefintech_fe} Panel A column 8. The racial animus measures are as follows: column 2 uses the number of racially charged searches in a designated media market (DMA); column 3 uses responses to the question on favorability toward Black people in the Nationscape survey aggregated to the congressional district level; columns 4--5 use the implicit and explicit score from the Implicit Association Test (IAT) aggregated to the county level; columns 6--7 use the dissimilarity and isolation index at the metropolitan statistical area (MSA) level. All racial animus measures are standardized at their respective levels of geography, weighted by the number of PPP loans.  Controls are as described in Tables \ref{regs_racefintech_fe} and \ref{racefintech}. Standard errors are clustered by zipcode. $^{***}, ^{**}, ^{*}$ indicate statistical significance at the 1\%, 5\%, and 10\% levels, respectively.}
+        \end{minipage}
+    \end{table}
+\end{landscape}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+%%%%%%%%%%%%%%%%%%
+%%% Appendix text: COVID %%%
+%%%%%%%%%%%%%%%%%%
+
+%\section{The Role of Local COVID-19 Intensity} \label{covid}
+
+%Black communities were disproportionally hit by COVID-19, often suffering substantially higher case loads and mortality rates. At the same time, multigenerational households which led many adults to be even more vigilant about COVID-19 to protect older family members are more common in Black and minority neighborhoods. This could have led Black business owners to disproportionately seek out PPP loans from fintech lenders, which operated entirely remotely and did not involve any in-person interactions as could be the case for traditional banks operating branches.
+
+%To test whether higher local COVID-19 cases contributed to Black-owned businesses disproportionately receiving their loans from fintech lenders, we estimate whether the effect is driven by Black-owned businesses in high-COVID areas. To do so, we use data on daily COVID-19 cases made available by \cite{dong2020interactive}. We aggregate these data to the week-county level and merge them onto our data by the week of loan approval and county. Since COVID-19 cases rates are measured at the county-level, we do not have enough variation when including city fixed effects. For this part of the analysis, we therefore use state fixed effects instead and estimate how much of the effect of different localities can be explained by differences in COVID-19 cases and death across counties.
+
+%Column (1) of Appendix Table \ref{regs_covid} replicates our baseline from column(4) of Table \ref{bank_statements}, but includes state instead of city fixed effect. In column (2) we split counties into those below and above the median in COVID-19 cases at approval and estimate the effect of being Black-owned separately for high versus low COVID-19 case load areas. In areas with below median COVID-19 cases, Black-owned businesses are 5.1 percentage points more likely to receive their loans from a fintech lenders, whereas they are 8.3 percentage points more likely to do so in areas with above median case loads. Similarly, in column (3), Black-owned businesses in the lower or middle third of cases are 5.1 and 5.5 percentage points more likely to receive PPP loans from fintech lenders, whereas those in the upper third of case loads are 8.7 percentage points more likely to do so. However, these differences in the estimated effects of being Black-owned are not statistically different from each other. In columns (4) and (5), we estimate the same specifications with COVID-19 deaths instead of cases and see a very similar picture. These results suggest that COVID-19 prevalence may have contributed somewhat to the main disparity we find, it is far from being able to explain the full set of results. Even in areas with low COVID-19 cases and deaths, Black-owned businesses were substantially more likely to receive fintech PPP loans.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Racial bias measure supplement %%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Supplement on Racial Bias Data}\label{a_racialbias}
+
+This appendix details the construction of our measures of racial bias. We make use of six measures: racially charged searches, Nationscape survey question on favorability; Project Implicit Race IAT scores; Project Implicit IAT follow-up survey on explicit attitudes; dissimilarity index; and isolation index.
+
+\subsection{Stephens-Davidowitz Measure}
+
+This measure uses Google search data to proxy for social attitudes. For example, the search rate for ``God" can explain 65\% of the variation in a state's residents belief in God \citet{stephens2013cost}. \cite{stephens2013cost} uses a particular racially-charged and loaded word to proxy for racial animus in a particular area. This word is now an unfortunately common search term---it is included in over 7 million searches annually. For example, the word ``migraine" was included in 30 percent fewer searches and it is roughly as frequent of a search term as ``Lakers" and the phrase ``Daily Show," both of which are a staples in American popular culture. 
+
+\cite{stephens2013cost} defines racial animus using the search rate of a racially charged word in a designated media market (DMA) from 2004 to 2007. He defines the racially charged search rate in a DMA $j$ as
+\begin{equation}
+ 	\text{Racially Charged Search Rate}_j = \frac{\frac{\text{Google searches including the word ``Word(s)"}}{\text{Total Google searches}}_j}{\frac{\text{Google Searches including the word ``Word(s)"}}{\text{Total Google searches}}_{\max}}. 
+ \end{equation}
+ \noindent Figure \ref{race_map} panel A shows the geographical distribution of racial animus by DMA, and figure \ref{race_hist} panel A shows the distribution of racially charged serches by DMA. 
+
+\subsection{Nationscape Survey}
+
+Nationscape is a large public opinion survey conducted in the leadup to the 2020 elections \citep{tausanovitch2020democracy}. To capture racial bias, we follow \cite{bursztyn2021immigrant} in using responses to the question: "Here are the names of some groups that are in the news from time to time. How favorable is your impression of each group or haven’t you heard enough to say? - Blacks." The scale is from 1--4, with 1 being very favorable and 4 being very unfavorable. We keep only the White respondents. Figure \ref{race_hist} Panel B shows the distribution of individual responses to the question by White respondents. The finest geographical information available in the survey is the congressional district level, so we duplicate the values for each borrower firm within the congressional district. Figure \ref{race_map} Panel B maps the geographical distribution of the average response by congressional district. We treat the response "Haven't heard enough" as missing. For robustness, we cluster the standard errors by congressional districts instead of zipcode and find similar results.
+
+\subsection{Project Implicit IAT Score}
+
+Project Implicit runs the Implicit Association Tests (IATs). In particular, we use data from the Race IAT, which measures explicit and implicit bias against different races \citep{xu2014psychology}. We keep only responses from White, non-Hispanic respondents.
+
+Implicit bias is measured by the IAT test, where it asks respondents to first use two buttons (“E” or “I”) on their keyboard to identify a series of faces that flash on the screen as Black or White and then a series of words that flash on the screen as good or bad. In the following rounds, both faces and words will flash on the screen, but the respondents will still be limited to “E” or “I” — only “E” could now mean “Black or good” while “I” will mean “White or bad” in one round and later be reversed so “E” means “Black or bad” and “I” means “White or good” in the next round. The idea is that if they have a slower reaction to selecting “good” when “Black” is linked to it or “bad” when “White” is linked to it, they probably have a bias against Black people or bias in favor of White people (please refer to \cite{lopez2017for} for further details). The IAT Score is then calculated as the average difference in average speed per participant between each corresponding "actual" and practice blocks scaled by the pooled standard deviation. 
+
+Figure \ref{race_hist} Panel C shows the distribution of the IAT score at the respondent-level. Figure \ref{race_map} Panel C shows the geographical distribution of average IAT scores by county. We omit counties with less than 50 respondents. 
+
+\subsection{Project Implicit IAT Explicit Attitude}
+
+Following the IAT, respondents are asked to take a follow-up survey. We follow \cite{bursztyn2021immigrant} in using the first question in the survey to proxy for explicit attitudes:  ``Please rate how warm or cold you feel toward the following groups (0 = coldest feelings, 5 = neutral, 10 = warmest feelings): African Americans." The responses are on a scale from 0--10.
+
+Figures \ref{race_hist} Panel D and \ref{race_map} Panel D show the response distribution and geographical distribution of the explicit score, respectively. It is noteworthy that the mode is "neutral." We omit counties with less than 50 respondents.
+
+\subsection{Dissimilarity Index}
+
+As an alternative to surveys to measuring racial bias, we also estimated residential segregation at the MSA-level to proxy for racial bias. The intuition is that a city that is more segregated would also have residents that are, on average, more racially biased. Another motivation for using residential segregation as a proxy for bias in addition to survey is that survey respondents could be dishonest with their bias (see the histogram of the explicit IAT score). Among many other things, residential segregation could represent a certain revealed preference of the residents.
+
+Beyond the bias of residents, residential segregation can also a proxy for more uneven resource distribution between communities--segregated neighborhoods implies segregated amenities. The residential segregation literature proposes various different methods of measuring segregation (see \cite{massey1988dimensions} for a comprehensive review).  Here, we consider the dissimilarity index, which measures how similar the distribution of Black residents in a tract relative to the distribution of White residents in the same tract \citep{massey1988dimensions}. Essentially, it measures how many Black residents have to move to achieve an even distribution across tracts. As the distribution of Black residents is more uneven across census tracts, the index gets larger. It is defined as the following:
+
+\begin{equation}
+    \label{eq:dissim}
+    D = \frac{1}{2} \sum_{i=1}^N \Bigl| \frac{w_i}{W_T} - \frac{b_i}{B_T} \Bigr|
+\end{equation}
+
+where it is half the sum of the absolute difference between the share of Black ($b$) and White ($w$) people in tract $i$ of MSA $T$. The higher the index, the more segregated a MSA is. Figure \ref{race_hist} panel E shows the distribution of the dissimilarity index. Figure \ref{race_map} panel E maps MSA-level residential segregation across the U.S.
+
+\subsection{Isolation Index}
+
+We estimate an additional measure of residential segregation: isolation index. Isolation measures the extent to which Black people only interact with other Black people, instead of other White people \citep{massey1988dimensions}. Essentially, consider this index as the likelihood of a Black resident sharing the same neighborhood (census tract) with another Black resident. As Black residents are more isolated, the isolation index approaches one. It is measured as the following:
+
+\begin{equation}
+    \label{eq:isolation}
+    I = \sum_{i=1}^N \Bigl( \frac{b_i}{B_T} \times \frac{b_i}{b_i + w_i} \Bigr)
+\end{equation}
+
+where it is the sum (over all census tracts $i$ in MSA $T$) of the products of the share of Black residents in tract $i$ of total Black residents in MSA $T$ and share of Black residents in tract $i$ of total Black and White residents in tract $i$. Note that the isolation index measures a different dimension of segregation compared to the dissimilarity index. The dissimilarity index does not consider the relative size of the groups being compared. For example, a particular MSA might be "even" according to the dissimilarity index, but if the population of Black residents is much smaller than that of White residents, then the MSA will be high on the isolation index. Figure \ref{race_hist} Panel F shows the distribution of the isolation index. Figure \ref{race_map} Panel F maps the geography of isolation.
+
+% Figure: Racial animus maps
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Geographical Distribution of Racial Animus}}\label{race_map}
+	\centering
+	\begin{subfigure}{0.5\linewidth}
+   		\caption{Racially Charged Searches}
+   		\centering
+		\includegraphics[width=0.85\textwidth]{../Output/racially_charged_search_map.png}
+		\vspace{0.5cm}
+   	\end{subfigure}%
+   	\begin{subfigure}{0.5\linewidth}
+   		\caption{Nationscape Survey}
+   		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/nationscape_cd_map.png}
+		\vspace{0.5cm}
+	\end{subfigure}
+	\begin{subfigure}{0.5\linewidth}
+   		\caption{IAT Implicit Scores}
+   		\centering
+  	 	\includegraphics[width=0.85\textwidth]{../Output/allwhite_iatscore_map.png}
+	 	\vspace{0.5cm}
+	\end{subfigure}%
+  	\begin{subfigure}{0.5\linewidth}
+  		\caption{IAT Explicit Scores}
+  		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/allwhite_iatexplicit_map.png}
+		\vspace{0.5cm}
+  	 \end{subfigure}
+
+	\begin{subfigure}{0.5\linewidth}
+   		\caption{ Dissimilarity Index}
+   		\centering
+  	 	\includegraphics[width=0.85\textwidth]{../Output/dissimilarity_map_msa.png}
+  	\end{subfigure}%
+  	\begin{subfigure}{0.5\linewidth}
+  		\caption{ Isolation Index}
+  		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/isolation_map_msa.png}
+  	\end{subfigure}
+
+	\begin{minipage}{1\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the geographical distribution of each proxy of racial bias used in the analysis. Racially charged searches (panel A) are at the designated media market (DMA) level, plotted at the county level. IAT scores (panels B and C) are aggregated at the county level, counties with less than 50 respondents are coded as omitted. Nationscape surveys (panel D) are aggregated at the congressional district level. The dissimilarity and isolation index (panels E and F) are calculated at the metro/micropolitan statistical area (MSA) level.}
+	\end{minipage}
+\end{figure}
+
+% Figure: Racial animus histograms
+\newpage
+\begin{figure}[H]
+	\caption{\textbf{Distribution of Racial Animus}}\label{race_hist}
+	\centering
+	\begin{subfigure}{0.5\linewidth}
+   		\caption{Racially Charged Searches}
+   		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/racially_charged_search_hist.png}
+		\vspace{0.5cm}
+   	\end{subfigure}%
+   	\begin{subfigure}{0.5\linewidth}
+   		\caption{Nationscape Survey}
+   		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/respondent_hist.png}
+		\vspace{0.5cm}
+    	\end{subfigure}
+
+    	\begin{subfigure}{0.5\linewidth}
+   		\caption{IAT Implicit Scores}
+   		\centering
+  		\includegraphics[width=0.85\textwidth]{../Output/allwhite_iatscore_hist.png}
+		\vspace{0.5cm}
+  	\end{subfigure}%
+  	\begin{subfigure}{0.5\linewidth}
+  		\caption{IAT Explicit Scores}
+  		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/allwhite_iatexplicit_hist.png}
+		\vspace{0.5cm}
+  	\end{subfigure}
+
+	\begin{subfigure}{0.5\linewidth}
+   		\caption{Dissimilarity Index}
+   		\centering
+  		\includegraphics[width=0.85\textwidth]{../Output/dissimilarity_hist_msa.png}
+  	\end{subfigure}%
+  	\begin{subfigure}{0.5\linewidth}
+  		\caption{Isolation Index}
+  		\centering
+   		\includegraphics[width=0.85\textwidth]{../Output/isolation_hist_msa.png}
+  	\end{subfigure}
+
+	\begin{minipage}{\textwidth} \medskip
+		\footnotesize{{\bf Note: }This figure shows the distribution of each proxy of racial bias used in the analysis. Racially charged searches (panel A) are at the designated media market (DMA) level. IAT scores (panels B and C) are at the respondent level. Nationscape surveys (panel D) are at the respondent level. The dissimilarity and isolation index (panels E and F) are calculated at the metro/micropolitan statistical area (MSA) level.}
+	\end{minipage}
+\end{figure}
+
+\end{document}
