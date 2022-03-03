@@ -12,7 +12,7 @@ PATTERNS = ["appendixtable", "table", "appendixfigure", "figure"]
 parser = argparse.ArgumentParser(description="Get order that tables appear in text")
 
 parser.add_argument(
-    "filepath",
+    "file",
     type=str,
     help="file to parse"
 )
@@ -65,7 +65,7 @@ def write_results(results):
 
             f.write("\n")
 
-def main(file=args.filepath, patterns=PATTERNS):
+def main(file=args.file, patterns=PATTERNS):
     txt = open_file(file)
     patterns_dict = initialize_patterns(patterns)
     res_dict = get_results(patterns_dict, txt)
