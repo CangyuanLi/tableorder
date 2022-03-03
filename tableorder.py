@@ -1,10 +1,23 @@
 # Imports
 
+import argparse
 import re
 
 # Globals
 
 PATTERNS = ["appendixtable", "table", "appendixfigure", "figure"]
+
+# Parser
+
+parser = argparse.ArgumentParser(description="Get order that tables appear in text")
+
+parser.add_argument(
+    "filepath",
+    type=str,
+    help="file to parse"
+)
+
+args = parser.parse_args()
 
 # Functions
 
@@ -52,9 +65,9 @@ def write_results(results):
 
             f.write("\n")
 
-def main():
-    txt = open_file("test.tex")
-    patterns_dict = initialize_patterns(patterns=PATTERNS)
+def main(file=args.filepath, patterns=PATTERNS):
+    txt = open_file(file)
+    patterns_dict = initialize_patterns(patterns)
     res_dict = get_results(patterns_dict, txt)
     write_results(res_dict)
 
